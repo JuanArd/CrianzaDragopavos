@@ -5,9 +5,14 @@ WHERE Esteril = 0
  AND Reproducible = 0
 ORDER BY Nombre;
 
---SELECT * FROM Montura WHERE Esteril = 1 ORDER BY Nombre
+--UPDATE crianza_monturas.dbo.Montura SET Esteril = 1 WHERE Esteril = 0 AND Reproducible = 0
 
-UPDATE crianza_monturas.dbo.Montura SET Reproducible = 1 WHERE Id IN (546, 569);
+--UPDATE crianza_monturas.dbo.Montura SET Esteril = 0 WHERE Nombre IN ('DORPE-1', 'PURPE-4',
+--'PURPE-5-CAMS', 'PURPE-6', 'ORQAL-4-CAM', 'PURAL-3', 'ESMPE-36', 'ESMPE-39')
+
+--SELECT * FROM crianza_monturas.dbo.Montura WHERE Esteril = 1 ORDER BY Nombre
+
+--UPDATE crianza_monturas.dbo.Montura SET Reproducible = 1 WHERE Id IN (546, 569);
 
 
 /* SCROLL DOFUS QUERY */
@@ -45,3 +50,9 @@ SELECT *
 FROM crianza_monturas.dbo.Montura
 WHERE Nombre LIKE '%-PUR%'
  AND Esteril = 0
+
+/* ACTUALIZACION PUREZA
+UPDATE crianza_monturas.dbo.Montura
+SET CantPureza = 6
+WHERE Id = 569
+*/

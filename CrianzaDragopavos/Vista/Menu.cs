@@ -18,7 +18,11 @@ namespace CrianzaDragopavos
         public Menu()
         {
             InitializeComponent();
+            InicializarCombos();
+        }
 
+        private void InicializarCombos()
+        {
             tiposMontura = CargarTiposMontura();
 
             cmbTipoMontura.DataSource = tiposMontura;
@@ -339,6 +343,7 @@ namespace CrianzaDragopavos
                 Dictionary<int, double> cantTiposMadre = new Dictionary<int, double>();
                 Dictionary<int, double> cantTiposTotal = new Dictionary<int, double>();
                 Dictionary<int, double> cantTiposPorcentaje = new Dictionary<int, double>();
+                
                 double totalTiposPadres = 0;
                 double totalTiposMadres = 0;
                 double totalTipos = 0;
@@ -677,6 +682,11 @@ namespace CrianzaDragopavos
                 MessageBox.Show("Se generaron crias con Exito!", "Generacion de crias");
                 LimpiarCalculadora();
             }
+        }
+    
+        private void CalcularReproducciones()
+        {
+
         }
     }
 }

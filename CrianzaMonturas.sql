@@ -1,3 +1,4 @@
+/* REPRODUCCIONES */
 SELECT r.MonturaMachoId, mm.Nombre, r.MonturaHembraId, mh.Nombre
 	, /*CAST(r.FechaReproduccion AS date) as */FechaReproduccion, r.CriaId
 	, /*CAST(r.FechaNacimiento AS date) as */FechaNacimiento
@@ -6,9 +7,10 @@ SELECT r.MonturaMachoId, mm.Nombre, r.MonturaHembraId, mh.Nombre
   INNER JOIN crianza_monturas.dbo.Montura mh ON r.MonturaHembraId = mh.Id
   INNER JOIN crianza_monturas.dbo.Tipo th ON th.Id = mh.TipoId
 WHERE r.CriaId IS NULL
-	AND th.Generacion in (10)
+	--AND th.Generacion in (10)
 ORDER BY r.Id;
 
+/* NOMBRE MONTURAS */
 SELECT TOP 1 m.Id, m.Nombre, m.Sexo,M.Padre, m.Madre 
  FROM crianza_monturas.dbo.Montura m
 	INNER JOIN crianza_monturas.dbo.Tipo t ON m.TipoId = t.Id
@@ -40,12 +42,13 @@ SELECT Sexo, Reproducciones, count(1)
  FROM crianza_monturas.dbo.Montura
 WHERE Reproducible = 1
 	AND Esteril = 0
-	AND Reproducciones > 0
 GROUP BY Sexo,
 	Reproducciones
 ORDER BY Reproducciones,
 	Sexo;
 */
+
+
 /*
 SELECT * FROM crianza_monturas.dbo.Montura WHERE /*Reproducciones IN (0,1,2,3,4) AND*/ Sexo = 'M' AND (Esteril = 0 OR Fecundada = 1)
 UNION
