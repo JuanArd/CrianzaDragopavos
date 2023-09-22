@@ -65,7 +65,7 @@
             btnCrear.TabIndex = 3;
             btnCrear.Text = "Crear";
             btnCrear.UseVisualStyleBackColor = true;
-            btnCrear.Click += btnCrear_Click;
+            btnCrear.Click += BtnCrear_Click;
             // 
             // cmbSexo
             // 
@@ -91,7 +91,7 @@
             txtNombre.Name = "txtNombre";
             txtNombre.Size = new Size(176, 23);
             txtNombre.TabIndex = 0;
-            txtNombre.Leave += txtNombre_Leave;
+            txtNombre.Leave += TxtNombre_Leave;
             // 
             // lblNombre
             // 

@@ -16,19 +16,21 @@ namespace CrianzaDragopavos.Vista
         public string Nombre;
         public string Sexo;
         public bool Predispuesto;
-        Tipo cria;
-
+        
         public CrearCria(Tipo tipo)
         {
             InitializeComponent();
-            cria = tipo;
-            txtTipo.Text = cria.Nombre;
-            txtNombre.Text = cria.Sigla;
+            
+            Nombre = tipo.Nombre;
+            Sexo = string.Empty;
+
+            txtTipo.Text = Nombre;
+            txtNombre.Text = tipo.Sigla;
         }
 
-        private void btnCrear_Click(object sender, EventArgs e)
+        private void BtnCrear_Click(object sender, EventArgs e)
         {
-            string message = string.Format("Desea crear la cria [{0}] como resultado de la reproduccion?", cria.Nombre);
+            string message = string.Format("Desea crear la cria [{0}] como resultado de la reproduccion?", txtTipo.Text);
 
             DialogResult msg = MessageBox.Show(message, "Generar Cria", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
@@ -47,7 +49,7 @@ namespace CrianzaDragopavos.Vista
             this.Close();
         }
 
-        private void txtNombre_Leave(object sender, EventArgs e)
+        private void TxtNombre_Leave(object sender, EventArgs e)
         {
             Clipboard.SetText(txtNombre.Text);
         }

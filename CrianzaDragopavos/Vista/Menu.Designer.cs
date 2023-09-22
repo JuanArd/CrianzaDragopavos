@@ -123,7 +123,7 @@
             mnuCalculadora.Name = "mnuCalculadora";
             mnuCalculadora.Size = new Size(82, 20);
             mnuCalculadora.Text = "Calculadora";
-            mnuCalculadora.Click += mnuCalculadora_Click;
+            mnuCalculadora.Click += MnuCalculadora_Click;
             // 
             // mnuDragopavo
             // 
@@ -141,7 +141,7 @@
             pbxPPPP.SizeMode = PictureBoxSizeMode.Zoom;
             pbxPPPP.TabIndex = 1;
             pbxPPPP.TabStop = false;
-            pbxPPPP.Click += pbx_Click;
+            pbxPPPP.Click += Pbx_Click;
             // 
             // pbxPPPM
             // 
@@ -153,7 +153,7 @@
             pbxPPPM.SizeMode = PictureBoxSizeMode.Zoom;
             pbxPPPM.TabIndex = 2;
             pbxPPPM.TabStop = false;
-            pbxPPPM.Click += pbx_Click;
+            pbxPPPM.Click += Pbx_Click;
             // 
             // pbxPPMP
             // 
@@ -165,7 +165,7 @@
             pbxPPMP.SizeMode = PictureBoxSizeMode.Zoom;
             pbxPPMP.TabIndex = 3;
             pbxPPMP.TabStop = false;
-            pbxPPMP.Click += pbx_Click;
+            pbxPPMP.Click += Pbx_Click;
             // 
             // pbxPPMM
             // 
@@ -177,7 +177,7 @@
             pbxPPMM.SizeMode = PictureBoxSizeMode.Zoom;
             pbxPPMM.TabIndex = 4;
             pbxPPMM.TabStop = false;
-            pbxPPMM.Click += pbx_Click;
+            pbxPPMM.Click += Pbx_Click;
             // 
             // pbxPMMM
             // 
@@ -189,7 +189,7 @@
             pbxPMMM.SizeMode = PictureBoxSizeMode.Zoom;
             pbxPMMM.TabIndex = 5;
             pbxPMMM.TabStop = false;
-            pbxPMMM.Click += pbx_Click;
+            pbxPMMM.Click += Pbx_Click;
             // 
             // pbxPMMP
             // 
@@ -201,7 +201,7 @@
             pbxPMMP.SizeMode = PictureBoxSizeMode.Zoom;
             pbxPMMP.TabIndex = 6;
             pbxPMMP.TabStop = false;
-            pbxPMMP.Click += pbx_Click;
+            pbxPMMP.Click += Pbx_Click;
             // 
             // pbxPMPM
             // 
@@ -213,7 +213,7 @@
             pbxPMPM.SizeMode = PictureBoxSizeMode.Zoom;
             pbxPMPM.TabIndex = 7;
             pbxPMPM.TabStop = false;
-            pbxPMPM.Click += pbx_Click;
+            pbxPMPM.Click += Pbx_Click;
             // 
             // pbxPMPP
             // 
@@ -225,7 +225,7 @@
             pbxPMPP.SizeMode = PictureBoxSizeMode.Zoom;
             pbxPMPP.TabIndex = 8;
             pbxPMPP.TabStop = false;
-            pbxPMPP.Click += pbx_Click;
+            pbxPMPP.Click += Pbx_Click;
             // 
             // pbxP
             // 
@@ -237,7 +237,7 @@
             pbxP.SizeMode = PictureBoxSizeMode.Zoom;
             pbxP.TabIndex = 9;
             pbxP.TabStop = false;
-            pbxP.Click += pbx_Click;
+            pbxP.Click += Pbx_Click;
             // 
             // pbxPM
             // 
@@ -249,7 +249,7 @@
             pbxPM.SizeMode = PictureBoxSizeMode.Zoom;
             pbxPM.TabIndex = 10;
             pbxPM.TabStop = false;
-            pbxPM.Click += pbx_Click;
+            pbxPM.Click += Pbx_Click;
             // 
             // pbxPP
             // 
@@ -261,7 +261,7 @@
             pbxPP.SizeMode = PictureBoxSizeMode.Zoom;
             pbxPP.TabIndex = 11;
             pbxPP.TabStop = false;
-            pbxPP.Click += pbx_Click;
+            pbxPP.Click += Pbx_Click;
             // 
             // pbxPMM
             // 
@@ -273,7 +273,7 @@
             pbxPMM.SizeMode = PictureBoxSizeMode.Zoom;
             pbxPMM.TabIndex = 12;
             pbxPMM.TabStop = false;
-            pbxPMM.Click += pbx_Click;
+            pbxPMM.Click += Pbx_Click;
             // 
             // pbxPMP
             // 
@@ -285,7 +285,7 @@
             pbxPMP.SizeMode = PictureBoxSizeMode.Zoom;
             pbxPMP.TabIndex = 13;
             pbxPMP.TabStop = false;
-            pbxPMP.Click += pbx_Click;
+            pbxPMP.Click += Pbx_Click;
             // 
             // pbxPPM
             // 
@@ -297,7 +297,7 @@
             pbxPPM.SizeMode = PictureBoxSizeMode.Zoom;
             pbxPPM.TabIndex = 14;
             pbxPPM.TabStop = false;
-            pbxPPM.Click += pbx_Click;
+            pbxPPM.Click += Pbx_Click;
             // 
             // pbxPPP
             // 
@@ -309,7 +309,7 @@
             pbxPPP.SizeMode = PictureBoxSizeMode.Zoom;
             pbxPPP.TabIndex = 15;
             pbxPPP.TabStop = false;
-            pbxPPP.Click += pbx_Click;
+            pbxPPP.Click += Pbx_Click;
             // 
             // pbxM
             // 
@@ -321,7 +321,7 @@
             pbxM.SizeMode = PictureBoxSizeMode.Zoom;
             pbxM.TabIndex = 16;
             pbxM.TabStop = false;
-            pbxM.Click += pbx_Click;
+            pbxM.Click += Pbx_Click;
             // 
             // pbxMPPP
             // 
@@ -333,7 +333,7 @@
             pbxMPPP.SizeMode = PictureBoxSizeMode.Zoom;
             pbxMPPP.TabIndex = 17;
             pbxMPPP.TabStop = false;
-            pbxMPPP.Click += pbx_Click;
+            pbxMPPP.Click += Pbx_Click;
             // 
             // pbxMPPM
             // 
@@ -345,7 +345,7 @@
             pbxMPPM.SizeMode = PictureBoxSizeMode.Zoom;
             pbxMPPM.TabIndex = 18;
             pbxMPPM.TabStop = false;
-            pbxMPPM.Click += pbx_Click;
+            pbxMPPM.Click += Pbx_Click;
             // 
             // pbxMPMP
             // 
@@ -357,7 +357,7 @@
             pbxMPMP.SizeMode = PictureBoxSizeMode.Zoom;
             pbxMPMP.TabIndex = 19;
             pbxMPMP.TabStop = false;
-            pbxMPMP.Click += pbx_Click;
+            pbxMPMP.Click += Pbx_Click;
             // 
             // pbxMPMM
             // 
@@ -369,7 +369,7 @@
             pbxMPMM.SizeMode = PictureBoxSizeMode.Zoom;
             pbxMPMM.TabIndex = 20;
             pbxMPMM.TabStop = false;
-            pbxMPMM.Click += pbx_Click;
+            pbxMPMM.Click += Pbx_Click;
             // 
             // pbxMM
             // 
@@ -381,7 +381,7 @@
             pbxMM.SizeMode = PictureBoxSizeMode.Zoom;
             pbxMM.TabIndex = 21;
             pbxMM.TabStop = false;
-            pbxMM.Click += pbx_Click;
+            pbxMM.Click += Pbx_Click;
             // 
             // pbxMMMM
             // 
@@ -393,7 +393,7 @@
             pbxMMMM.SizeMode = PictureBoxSizeMode.Zoom;
             pbxMMMM.TabIndex = 22;
             pbxMMMM.TabStop = false;
-            pbxMMMM.Click += pbx_Click;
+            pbxMMMM.Click += Pbx_Click;
             // 
             // pbxMMPM
             // 
@@ -405,7 +405,7 @@
             pbxMMPM.SizeMode = PictureBoxSizeMode.Zoom;
             pbxMMPM.TabIndex = 23;
             pbxMMPM.TabStop = false;
-            pbxMMPM.Click += pbx_Click;
+            pbxMMPM.Click += Pbx_Click;
             // 
             // pbxMMPP
             // 
@@ -417,7 +417,7 @@
             pbxMMPP.SizeMode = PictureBoxSizeMode.Zoom;
             pbxMMPP.TabIndex = 24;
             pbxMMPP.TabStop = false;
-            pbxMMPP.Click += pbx_Click;
+            pbxMMPP.Click += Pbx_Click;
             // 
             // pbxMMMP
             // 
@@ -429,7 +429,7 @@
             pbxMMMP.SizeMode = PictureBoxSizeMode.Zoom;
             pbxMMMP.TabIndex = 25;
             pbxMMMP.TabStop = false;
-            pbxMMMP.Click += pbx_Click;
+            pbxMMMP.Click += Pbx_Click;
             // 
             // pbxMMP
             // 
@@ -441,7 +441,7 @@
             pbxMMP.SizeMode = PictureBoxSizeMode.Zoom;
             pbxMMP.TabIndex = 26;
             pbxMMP.TabStop = false;
-            pbxMMP.Click += pbx_Click;
+            pbxMMP.Click += Pbx_Click;
             // 
             // pbxMPM
             // 
@@ -453,7 +453,7 @@
             pbxMPM.SizeMode = PictureBoxSizeMode.Zoom;
             pbxMPM.TabIndex = 27;
             pbxMPM.TabStop = false;
-            pbxMPM.Click += pbx_Click;
+            pbxMPM.Click += Pbx_Click;
             // 
             // pbxMPP
             // 
@@ -465,7 +465,7 @@
             pbxMPP.SizeMode = PictureBoxSizeMode.Zoom;
             pbxMPP.TabIndex = 28;
             pbxMPP.TabStop = false;
-            pbxMPP.Click += pbx_Click;
+            pbxMPP.Click += Pbx_Click;
             // 
             // pbxMP
             // 
@@ -477,7 +477,7 @@
             pbxMP.SizeMode = PictureBoxSizeMode.Zoom;
             pbxMP.TabIndex = 29;
             pbxMP.TabStop = false;
-            pbxMP.Click += pbx_Click;
+            pbxMP.Click += Pbx_Click;
             // 
             // pbxMMM
             // 
@@ -489,7 +489,7 @@
             pbxMMM.SizeMode = PictureBoxSizeMode.Zoom;
             pbxMMM.TabIndex = 30;
             pbxMMM.TabStop = false;
-            pbxMMM.Click += pbx_Click;
+            pbxMMM.Click += Pbx_Click;
             // 
             // btnCalcular
             // 
@@ -499,7 +499,7 @@
             btnCalcular.TabIndex = 31;
             btnCalcular.Text = "Calcular";
             btnCalcular.UseVisualStyleBackColor = true;
-            btnCalcular.Click += btnCalcular_Click;
+            btnCalcular.Click += BtnCalcular_Click;
             // 
             // cmbPadre
             // 
@@ -508,7 +508,7 @@
             cmbPadre.Name = "cmbPadre";
             cmbPadre.Size = new Size(150, 23);
             cmbPadre.TabIndex = 32;
-            cmbPadre.SelectedIndexChanged += cmbPadre_SelectedIndexChanged;
+            cmbPadre.SelectedIndexChanged += CmbPadre_SelectedIndexChanged;
             // 
             // cmbMadre
             // 
@@ -517,7 +517,7 @@
             cmbMadre.Name = "cmbMadre";
             cmbMadre.Size = new Size(150, 23);
             cmbMadre.TabIndex = 33;
-            cmbMadre.SelectedIndexChanged += cmbMadre_SelectedIndexChanged;
+            cmbMadre.SelectedIndexChanged += CmbMadre_SelectedIndexChanged;
             // 
             // cmbTipoMontura
             // 
@@ -526,7 +526,7 @@
             cmbTipoMontura.Name = "cmbTipoMontura";
             cmbTipoMontura.Size = new Size(121, 23);
             cmbTipoMontura.TabIndex = 34;
-            cmbTipoMontura.SelectedIndexChanged += cmbTipoMontura_SelectedIndexChanged;
+            cmbTipoMontura.SelectedIndexChanged += CmbTipoMontura_SelectedIndexChanged;
             // 
             // lblTipoMontura
             // 
@@ -590,7 +590,7 @@
             btnCerrarReproduccion.TabIndex = 1;
             btnCerrarReproduccion.Text = "CerrarReproduccion";
             btnCerrarReproduccion.UseVisualStyleBackColor = true;
-            btnCerrarReproduccion.Click += btnCerrarReproduccion_Click;
+            btnCerrarReproduccion.Click += BtnCerrarReproduccion_Click;
             // 
             // btnReproducir
             // 
@@ -600,7 +600,7 @@
             btnReproducir.TabIndex = 0;
             btnReproducir.Text = "Reproducir";
             btnReproducir.UseVisualStyleBackColor = true;
-            btnReproducir.Click += btnReproducir_Click;
+            btnReproducir.Click += BtnReproducir_Click;
             // 
             // Menu
             // 
