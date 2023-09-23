@@ -8,11 +8,11 @@ namespace CrianzaDragopavos
     public partial class Menu : Form
     {
         int TipoMontura = 0;
-        List<TipoMontura> tiposMontura;
-        List<Tipo> tipos;
-        List<Montura> monturasMacho;
-        List<Montura> monturasHembra;
-        List<Cruce> cruces;
+        List<Cruce> cruces = new();
+        List<Montura> monturasHembra = new();
+        List<Montura> monturasMacho = new();
+        List<Tipo> tipos = new();
+        List<TipoMontura> tiposMontura = new();
 
         public Menu()
         {
@@ -36,8 +36,7 @@ namespace CrianzaDragopavos
             DataTable dt = new();
             List<TipoMontura> tipoMonturas = new();
 
-            CrianzaMonturas cd = new();
-            cd.ObtenerTiposMontura(ref dt);
+            CrianzaMonturas.ObtenerTiposMontura(ref dt);
 
             for (int r = 0; r < dt.Rows.Count; r++)
             {
@@ -58,8 +57,7 @@ namespace CrianzaDragopavos
             DataTable dt = new();
             List<Montura> monturas = new();
 
-            CrianzaMonturas cd = new();
-            cd.ObtenerMonturas(ref dt, TipoMontura);
+            CrianzaMonturas.ObtenerMonturas(ref dt, TipoMontura);
 
             for (int r = 0; r < dt.Rows.Count; r++)
             {
@@ -110,8 +108,7 @@ namespace CrianzaDragopavos
         {
             DataTable dt = new();
 
-            CrianzaMonturas cd = new();
-            cd.ObtenerMontura(ref dt, id);
+            CrianzaMonturas.ObtenerMontura(ref dt, id);
 
             Montura montura = new()
             {
@@ -136,8 +133,7 @@ namespace CrianzaDragopavos
             DataTable dt = new();
             List<Tipo> tipos = new();
 
-            CrianzaMonturas cd = new();
-            cd.ObtenerTipo(ref dt, TipoMontura);
+            CrianzaMonturas.ObtenerTipo(ref dt, TipoMontura);
 
             for (int r = 0; r < dt.Rows.Count; r++)
             {
@@ -170,8 +166,7 @@ namespace CrianzaDragopavos
             DataTable dt = new();
             List<Cruce> cruces = new();
 
-            CrianzaMonturas cd = new();
-            cd.ObtenerCruces(ref dt, TipoMontura);
+            CrianzaMonturas.ObtenerCruces(ref dt, TipoMontura);
 
             for (int r = 0; r < dt.Rows.Count; r++)
             {
@@ -294,21 +289,19 @@ namespace CrianzaDragopavos
 
         private void CargarImagen(Montura montura, string sufixPbx)
         {
+
             string nombrePbx = "pbx" + sufixPbx;
             PictureBox pbx = (PictureBox)this.Controls[nombrePbx];
             pbx.Tag = montura.TipoId;
 
-            if (montura.TipoId != 0)
+            if (tipos == null || montura.TipoId != 0)
+                pbx.Image = null;
+            else
             {
-                Byte[] image = tipos.Find(x => x.Id == montura.TipoId).Imagen;
+                Byte[] image = tipos.Find(x => x.Id == montura.TipoId)!.Imagen;
                 MemoryStream ms = new(image);
                 pbx.Image = Image.FromStream(ms);
             }
-            else
-            {
-                pbx.Image = null;
-            }
-
         }
 
         private void LimpiarArbol(string pPrefix)
@@ -448,10 +441,13 @@ namespace CrianzaDragopavos
             catch { }
         }
 
-        private void PbxResultado_Click(object sender, EventArgs e)
+        private void PbxResultado_Click(object? sender, EventArgs e)
         {
-            PictureBox res = (PictureBox)sender;
-            GenerarCria((Tipo)res.Tag, (Montura)cmbPadre.SelectedItem, (Montura)cmbMadre.SelectedItem);
+            if (sender != null)
+            {
+                PictureBox res = (PictureBox)sender;
+                GenerarCria((Tipo)res.Tag, (Montura)cmbPadre.SelectedItem, (Montura)cmbMadre.SelectedItem);
+            }
         }
 
         private void GenerarCria(Tipo pCria, Montura pPadre, Montura pMadre)
@@ -461,13 +457,12 @@ namespace CrianzaDragopavos
 
             if (frmCria == DialogResult.OK)
             {
-                CrianzaMonturas cm = new();
-                bool inserted = cm.InsertarCria(frmCrear.Nombre, frmCrear.Sexo, TipoMontura, pCria.Id, frmCrear.Predispuesto,
+                bool inserted = CrianzaMonturas.InsertarCria(frmCrear.Nombre, frmCrear.Sexo, TipoMontura, pCria.Id, frmCrear.Predispuesto,
                     pPadre.Id, pMadre.Id, out int idCria);
 
                 if (inserted)
                 {
-                    bool updated = cm.ActualizarReproduccion(idCria, pPadre.Id, pMadre.Id);
+                    bool updated = CrianzaMonturas.ActualizarReproduccion(idCria, pPadre.Id, pMadre.Id);
 
                     if (updated)
                     {
@@ -517,10 +512,14 @@ namespace CrianzaDragopavos
             flpResultados.Controls.Clear();
             pnlResultados.SendToBack();
             pnlResultados.Visible = false;
+
             LimpiarArbol(string.Empty);
+
             cmbPadre.DataSource = null;
             cmbMadre.DataSource = null;
+
             CargarMonturas();
+
             lblReproduccionesMadre.Text = "";
             lblReproduccionesPadre.Text = "";
             pbxP.Image = null;
@@ -545,8 +544,7 @@ namespace CrianzaDragopavos
 
         private static void AparearMonturas(Montura pPadre, Montura pMadre)
         {
-            CrianzaMonturas cm = new();
-            bool inserted = cm.InsertarReproduccion(pPadre.Id, pMadre.Id);
+            bool inserted = CrianzaMonturas.InsertarReproduccion(pPadre.Id, pMadre.Id);
 
             if (inserted)
             {
@@ -564,8 +562,7 @@ namespace CrianzaDragopavos
             Montura padre = (Montura)cmbPadre.SelectedItem;
             Montura madre = (Montura)cmbMadre.SelectedItem;
 
-            CrianzaMonturas cm = new();
-            bool updated = cm.CerrarReproduccion(padre.Id, madre.Id);
+            bool updated = CrianzaMonturas.CerrarReproduccion(padre.Id, madre.Id);
 
             if (updated)
             {

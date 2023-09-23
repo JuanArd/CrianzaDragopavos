@@ -10,14 +10,14 @@ using System.Windows.Forms;
 
 namespace CrianzaDragopavos.Controlador
 {
-    internal class CrianzaMonturas
+    public static class CrianzaMonturas
     {
-        public void ObtenerTiposMontura(ref DataTable dt)
+        public static void ObtenerTiposMontura(ref DataTable dt)
         {
             try
             {
                 MasterConnection.Open();
-                SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM TipoMontura", MasterConnection.conn);
+                SqlDataAdapter da = new("SELECT * FROM TipoMontura", MasterConnection.conn);
                 da.Fill(dt);
             }
             catch (Exception ex)
@@ -30,12 +30,12 @@ namespace CrianzaDragopavos.Controlador
             }
         }
 
-        public void ObtenerMonturas(ref DataTable dt, int pTipoMontura)
+        public static void ObtenerMonturas(ref DataTable dt, int pTipoMontura)
         {
             try
             {
                 MasterConnection.Open();
-                SqlDataAdapter da = new SqlDataAdapter("ObtenerMonturas", MasterConnection.conn);
+                SqlDataAdapter da = new("ObtenerMonturas", MasterConnection.conn);
 
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.SelectCommand.Parameters.AddWithValue("@TipoMontura", pTipoMontura);
@@ -52,12 +52,12 @@ namespace CrianzaDragopavos.Controlador
             }
         }
 
-        public void ObtenerMontura(ref DataTable dt, int pIdMontura)
+        public static void ObtenerMontura(ref DataTable dt, int pIdMontura)
         {
             try
             {
                 MasterConnection.Open();
-                SqlDataAdapter da = new SqlDataAdapter("ObtenerMontura", MasterConnection.conn);
+                SqlDataAdapter da = new("ObtenerMontura", MasterConnection.conn);
 
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.SelectCommand.Parameters.AddWithValue("@Id", pIdMontura);
@@ -74,12 +74,12 @@ namespace CrianzaDragopavos.Controlador
             }
         }
 
-        public void ObtenerTipo(ref DataTable dt, int pTipoMontura)
+        public static void ObtenerTipo(ref DataTable dt, int pTipoMontura)
         {
             try
             {
                 MasterConnection.Open();
-                SqlDataAdapter da = new SqlDataAdapter("ObtenerTipo", MasterConnection.conn);
+                SqlDataAdapter da = new("ObtenerTipo", MasterConnection.conn);
 
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.SelectCommand.Parameters.AddWithValue("@TipoMontura", pTipoMontura);
@@ -96,12 +96,12 @@ namespace CrianzaDragopavos.Controlador
             }
         }
 
-        public void ObtenerCruces(ref DataTable dt, int pTipoMontura)
+        public static void ObtenerCruces(ref DataTable dt, int pTipoMontura)
         {
             try
             {
                 MasterConnection.Open();
-                SqlDataAdapter da = new SqlDataAdapter("ObtenerCruces", MasterConnection.conn);
+                SqlDataAdapter da = new("ObtenerCruces", MasterConnection.conn);
 
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.SelectCommand.Parameters.AddWithValue("@TipoMontura", pTipoMontura);
@@ -118,12 +118,12 @@ namespace CrianzaDragopavos.Controlador
             }
         }
     
-        public bool InsertarCria(string pNombre, string pSexo, int pTipoMontura, int pCria, bool pPredispuesto, int pPadre, int pMadre, out int idCria)
+        public static bool InsertarCria(string pNombre, string pSexo, int pTipoMontura, int pCria, bool pPredispuesto, int pPadre, int pMadre, out int idCria)
         {
             try
             {
                 MasterConnection.Open();
-                SqlCommand cmd = new SqlCommand("InsertarCria", MasterConnection.conn);
+                SqlCommand cmd = new("InsertarCria", MasterConnection.conn);
 
                 int predisp = pPredispuesto ? 1 : 0;
 
@@ -152,14 +152,15 @@ namespace CrianzaDragopavos.Controlador
             }
         }
     
-        public bool ActualizarReproduccion(int pIdCria, int pPadre, int pMadre)
+        public static bool ActualizarReproduccion(int pIdCria, int pPadre, int pMadre)
         {
             try
             {
                 MasterConnection.Open();
-                SqlCommand cmd = new SqlCommand("ActualizarReproduccion", MasterConnection.conn);
-
-                cmd.CommandType = CommandType.StoredProcedure;
+                SqlCommand cmd = new("ActualizarReproduccion", MasterConnection.conn)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
                 cmd.Parameters.AddWithValue("@Cria", pIdCria);
                 cmd.Parameters.AddWithValue("@Padre", pPadre);
                 cmd.Parameters.AddWithValue("@Madre", pMadre);
@@ -179,14 +180,16 @@ namespace CrianzaDragopavos.Controlador
             }
         }
 
-        public bool InsertarReproduccion(int pPadre, int pMadre)
+        public static bool InsertarReproduccion(int pPadre, int pMadre)
         {
             try
             {
                 MasterConnection.Open();
-                SqlCommand cmd = new SqlCommand("InsertarReproduccion", MasterConnection.conn);
+                SqlCommand cmd = new("InsertarReproduccion", MasterConnection.conn)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
 
-                cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@Padre", pPadre);
                 cmd.Parameters.AddWithValue("@Madre", pMadre);
 
@@ -205,14 +208,15 @@ namespace CrianzaDragopavos.Controlador
             }
         }
 
-        public bool CerrarReproduccion(int pPadre, int pMadre)
+        public static bool CerrarReproduccion(int pPadre, int pMadre)
         {
             try
             {
                 MasterConnection.Open();
-                SqlCommand cmd = new SqlCommand("CerrarReproduccion", MasterConnection.conn);
-
-                cmd.CommandType = CommandType.StoredProcedure;
+                SqlCommand cmd = new("CerrarReproduccion", MasterConnection.conn)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
                 cmd.Parameters.AddWithValue("@Padre", pPadre);
                 cmd.Parameters.AddWithValue("@Madre", pMadre);
 
