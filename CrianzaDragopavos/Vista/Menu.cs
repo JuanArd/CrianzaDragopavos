@@ -14,13 +14,15 @@ namespace CrianzaDragopavos
         List<Tipo> tipos = new();
         List<TipoMontura> tiposMontura = new();
 
+        #region Inicializadores
+
         public Menu()
         {
             InitializeComponent();
-            InicializarCombos();
+            InicializarCombo();
         }
 
-        private void InicializarCombos()
+        private void InicializarCombo()
         {
             tiposMontura = CargarTiposMontura();
 
@@ -43,9 +45,10 @@ namespace CrianzaDragopavos
                 int id = Convert.ToInt32(dt.Rows[r][0].ToString());
                 string nombre = dt.Rows[r][1].ToString() ?? string.Empty;
 
-                tipoMonturas.Add(new TipoMontura { 
-                    Id=id,
-                    Nombre=nombre 
+                tipoMonturas.Add(new TipoMontura
+                {
+                    Id = id,
+                    Nombre = nombre
                 });
             }
 
@@ -138,7 +141,7 @@ namespace CrianzaDragopavos
             for (int r = 0; r < dt.Rows.Count; r++)
             {
                 int id = Convert.ToInt32(dt.Rows[r][1].ToString());
-                
+
                 string alias = dt.Rows[r][2].ToString() ?? string.Empty;
                 string nombre = dt.Rows[r][3].ToString() ?? string.Empty;
                 byte[] imagen = (Byte[])dt.Rows[r][4];
@@ -146,14 +149,15 @@ namespace CrianzaDragopavos
                 int generacion = Convert.ToInt32(dt.Rows[r][6].ToString());
 
 
-                tipos.Add(new Tipo { 
-                        Id = id,
-                        Alias = alias,
-                        Nombre = nombre,
-                        Imagen = imagen,
-                        Sigla = sigla,
-                        Generacion = generacion
-                    }
+                tipos.Add(new Tipo
+                {
+                    Id = id,
+                    Alias = alias,
+                    Nombre = nombre,
+                    Imagen = imagen,
+                    Sigla = sigla,
+                    Generacion = generacion
+                }
                 );
 
             }
@@ -181,6 +185,10 @@ namespace CrianzaDragopavos
             return cruces;
         }
 
+        #endregion Inicializadores
+
+        #region Metodos
+
         private int ObtenerCruce(int tipo1, int tipo2)
         {
             int resultado = 0;
@@ -190,41 +198,6 @@ namespace CrianzaDragopavos
                 resultado = cruce.TipoResultado;
 
             return resultado;
-        }
-
-        private void CmbTipoMontura_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-            monturasHembra = new List<Montura>();
-            monturasMacho = new List<Montura>();
-
-            TipoMontura = ((TipoMontura)cmbTipoMontura.SelectedItem).Id;
-            tipos = CargarTipos();
-            cruces = CargarCruces();
-        }
-
-        private void CmbPadre_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            LimpiarArbol("P");
-            Montura padre = (Montura)cmbPadre.SelectedItem;
-
-            if (padre != null)
-            {
-                CargarPadresMadres(padre, "P", 3);
-                RellenarPbx("P");
-            }
-        }
-
-        private void CmbMadre_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            LimpiarArbol("M");
-            Montura madre = (Montura)cmbMadre.SelectedItem;
-
-            if (madre != null)
-            {
-                CargarPadresMadres(madre, "M", 3);
-                RellenarPbx("M");
-            }
         }
 
         private void CargarPadresMadres(Montura pRaiz, string pPrefix, int generacion)
@@ -337,11 +310,6 @@ namespace CrianzaDragopavos
             }
         }
 
-        private void BtnCalcular_Click(object sender, EventArgs e)
-        {
-            CalcularReproducciones();
-        }
-
         private void CargarPuntosJerarquia(ref Dictionary<int, double> puntosPadre, ref Dictionary<int, double> puntosMadre)
         {
             int puntos = 0;
@@ -441,122 +409,6 @@ namespace CrianzaDragopavos
             catch { }
         }
 
-        private void PbxResultado_Click(object? sender, EventArgs e)
-        {
-            if (sender != null)
-            {
-                PictureBox res = (PictureBox)sender;
-                GenerarCria((Tipo)res.Tag, (Montura)cmbPadre.SelectedItem, (Montura)cmbMadre.SelectedItem);
-            }
-        }
-
-        private void GenerarCria(Tipo pCria, Montura pPadre, Montura pMadre)
-        {
-            CrearCria frmCrear = new(pCria);
-            DialogResult frmCria = frmCrear.ShowDialog();
-
-            if (frmCria == DialogResult.OK)
-            {
-                bool inserted = CrianzaMonturas.InsertarCria(frmCrear.Nombre, frmCrear.Sexo, TipoMontura, pCria.Id, frmCrear.Predispuesto,
-                    pPadre.Id, pMadre.Id, out int idCria);
-
-                if (inserted)
-                {
-                    bool updated = CrianzaMonturas.ActualizarReproduccion(idCria, pPadre.Id, pMadre.Id);
-
-                    if (updated)
-                    {
-                        string mensaje = string.Format("Cria generada con Exito!{0}¿Desea cerrar la reproducción?", Environment.NewLine);
-
-                        DialogResult cerrarCria = MessageBox.Show(mensaje, "Generacion de cria", MessageBoxButtons.YesNo);
-
-                        if (cerrarCria == DialogResult.Yes)
-                        {
-                            CerrarReproduccion();
-                        }
-                    }
-                }
-            }
-        }
-
-        private void Pbx_Click(object sender, EventArgs e)
-        {
-            PictureBox pbx = (PictureBox)sender;
-            GrillaTipos frmGrilla = new(tipos);
-            DialogResult result = frmGrilla.ShowDialog();
-
-            if (result == DialogResult.OK)
-            {
-                if (frmGrilla.ValueSelected["Id"].Value.ToString() != "0")
-                {
-                    Byte[] image = (byte[])frmGrilla.ValueSelected["Imagen"].Value;
-                    MemoryStream ms = new(image);
-                    pbx.Image = Image.FromStream(ms);
-                }
-                else
-                {
-                    pbx.Image = null;
-                }
-
-                pbx.Tag = Convert.ToInt32(frmGrilla.ValueSelected["Id"].Value.ToString());
-            }
-        }
-
-        private void MnuCalculadora_Click(object sender, EventArgs e)
-        {
-            LimpiarCalculadora();
-        }
-
-        private void LimpiarCalculadora()
-        {
-            flpResultados.Controls.Clear();
-            pnlResultados.SendToBack();
-            pnlResultados.Visible = false;
-
-            LimpiarArbol(string.Empty);
-
-            cmbPadre.DataSource = null;
-            cmbMadre.DataSource = null;
-
-            CargarMonturas();
-
-            lblReproduccionesMadre.Text = "";
-            lblReproduccionesPadre.Text = "";
-            pbxP.Image = null;
-            pbxM.Image = null;
-        }
-
-        private void BtnReproducir_Click(object sender, EventArgs e)
-        {
-            Montura padre = (Montura)cmbPadre.SelectedItem;
-            Montura madre = (Montura)cmbMadre.SelectedItem;
-
-            string message = string.Format("Desea aparear estas Monturas?:{0}Padre: [{1}]{0}Madre: [{2}]", Environment.NewLine, padre.Nombre, madre.Nombre);
-
-            DialogResult msg = MessageBox.Show(message, "Aparear Monturas", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            if (msg == DialogResult.Yes)
-            {
-                AparearMonturas(padre, madre);
-                LimpiarCalculadora();
-            }
-        }
-
-        private static void AparearMonturas(Montura pPadre, Montura pMadre)
-        {
-            bool inserted = CrianzaMonturas.InsertarReproduccion(pPadre.Id, pMadre.Id);
-
-            if (inserted)
-            {
-                MessageBox.Show("Monturas apareadas con Exito!", "Apareacion de Monturas");
-            }
-        }
-
-        private void BtnCerrarReproduccion_Click(object sender, EventArgs e)
-        {
-            CerrarReproduccion();
-        }
-
         private void CerrarReproduccion()
         {
             Montura padre = (Montura)cmbPadre.SelectedItem;
@@ -570,7 +422,7 @@ namespace CrianzaDragopavos
                 LimpiarCalculadora();
             }
         }
-    
+
         private void CalcularReproducciones()
         {
             Montura madre = (Montura)cmbMadre.SelectedItem;
@@ -608,7 +460,7 @@ namespace CrianzaDragopavos
             CalcularPorcentajeResultados(cantTiposPadre, cantTiposMadre, ref cantTiposTotal);
 
             CalcularPorcentajeTotal(ref cantTiposTotal);
-            
+
             ValidarOrdenarResultados(cantTiposTotal, ref cantTiposPorcentaje, ref porcentajeMayor, ref posiblesResultados);
 
             MostrarResultados(posiblesResultados, cantTiposPorcentaje, porcentajeMayor);
@@ -630,7 +482,7 @@ namespace CrianzaDragopavos
                     if (cantTiposPorcentaje[c] == porcentajeMayor)
                     {
                         Tipo Tipo = tipos.Find(x => x.Id == c) ?? tipos.First();
-                        resultados.Add(new Resultado (Tipo, cantTiposPorcentaje[c]));
+                        resultados.Add(new Resultado(Tipo, cantTiposPorcentaje[c]));
                         i++;
                     }
                 }
@@ -726,5 +578,168 @@ namespace CrianzaDragopavos
                 cantTiposMadre[k] = cantTiposMadre[k] / totalTiposMadres;
             }
         }
+
+        private static void AparearMonturas(Montura pPadre, Montura pMadre)
+        {
+            bool inserted = CrianzaMonturas.InsertarReproduccion(pPadre.Id, pMadre.Id);
+
+            if (inserted)
+            {
+                MessageBox.Show("Monturas apareadas con Exito!", "Apareacion de Monturas");
+            }
+        }
+
+        private void LimpiarCalculadora()
+        {
+            flpResultados.Controls.Clear();
+            pnlResultados.SendToBack();
+            pnlResultados.Visible = false;
+
+            LimpiarArbol(string.Empty);
+
+            cmbPadre.DataSource = null;
+            cmbMadre.DataSource = null;
+
+            CargarMonturas();
+
+            lblReproduccionesMadre.Text = "";
+            lblReproduccionesPadre.Text = "";
+            pbxP.Image = null;
+            pbxM.Image = null;
+        }
+
+        private void GenerarCria(Tipo pCria, Montura pPadre, Montura pMadre)
+        {
+            CrearCria frmCrear = new(pCria);
+            DialogResult frmCria = frmCrear.ShowDialog();
+
+            if (frmCria == DialogResult.OK)
+            {
+                bool inserted = CrianzaMonturas.InsertarCria(frmCrear.Nombre, frmCrear.Sexo, TipoMontura, pCria.Id, frmCrear.Predispuesto,
+                    pPadre.Id, pMadre.Id, out int idCria);
+
+                if (inserted)
+                {
+                    bool updated = CrianzaMonturas.ActualizarReproduccion(idCria, pPadre.Id, pMadre.Id);
+
+                    if (updated)
+                    {
+                        string mensaje = string.Format("Cria generada con Exito!{0}¿Desea cerrar la reproducción?", Environment.NewLine);
+
+                        DialogResult cerrarCria = MessageBox.Show(mensaje, "Generacion de cria", MessageBoxButtons.YesNo);
+
+                        if (cerrarCria == DialogResult.Yes)
+                        {
+                            CerrarReproduccion();
+                        }
+                    }
+                }
+            }
+        }
+
+        #endregion Metodos
+
+        #region Eventos
+
+        private void CmbTipoMontura_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            monturasHembra = new List<Montura>();
+            monturasMacho = new List<Montura>();
+
+            TipoMontura = ((TipoMontura)cmbTipoMontura.SelectedItem).Id;
+            tipos = CargarTipos();
+            cruces = CargarCruces();
+        }
+
+        private void CmbPadre_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LimpiarArbol("P");
+            Montura padre = (Montura)cmbPadre.SelectedItem;
+
+            if (padre != null)
+            {
+                CargarPadresMadres(padre, "P", 3);
+                RellenarPbx("P");
+            }
+        }
+
+        private void CmbMadre_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LimpiarArbol("M");
+            Montura madre = (Montura)cmbMadre.SelectedItem;
+
+            if (madre != null)
+            {
+                CargarPadresMadres(madre, "M", 3);
+                RellenarPbx("M");
+            }
+        }
+
+        private void BtnCalcular_Click(object sender, EventArgs e)
+        {
+            CalcularReproducciones();
+        }
+
+        private void PbxResultado_Click(object? sender, EventArgs e)
+        {
+            if (sender != null)
+            {
+                PictureBox res = (PictureBox)sender;
+                GenerarCria((Tipo)res.Tag, (Montura)cmbPadre.SelectedItem, (Montura)cmbMadre.SelectedItem);
+            }
+        }
+
+        private void Pbx_Click(object sender, EventArgs e)
+        {
+            PictureBox pbx = (PictureBox)sender;
+            GrillaTipos frmGrilla = new(tipos);
+            DialogResult result = frmGrilla.ShowDialog();
+
+            if (result == DialogResult.OK)
+            {
+                if (frmGrilla.ValueSelected["Id"].Value.ToString() != "0")
+                {
+                    Byte[] image = (byte[])frmGrilla.ValueSelected["Imagen"].Value;
+                    MemoryStream ms = new(image);
+                    pbx.Image = Image.FromStream(ms);
+                }
+                else
+                {
+                    pbx.Image = null;
+                }
+
+                pbx.Tag = Convert.ToInt32(frmGrilla.ValueSelected["Id"].Value.ToString());
+            }
+        }
+
+        private void MnuCalculadora_Click(object sender, EventArgs e)
+        {
+            LimpiarCalculadora();
+        }
+
+        private void BtnReproducir_Click(object sender, EventArgs e)
+        {
+            Montura padre = (Montura)cmbPadre.SelectedItem;
+            Montura madre = (Montura)cmbMadre.SelectedItem;
+
+            string message = string.Format("Desea aparear estas Monturas?:{0}Padre: [{1}]{0}Madre: [{2}]", Environment.NewLine, padre.Nombre, madre.Nombre);
+
+            DialogResult msg = MessageBox.Show(message, "Aparear Monturas", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (msg == DialogResult.Yes)
+            {
+                AparearMonturas(padre, madre);
+                LimpiarCalculadora();
+            }
+        }
+
+        private void BtnCerrarReproduccion_Click(object sender, EventArgs e)
+        {
+            CerrarReproduccion();
+        }
+
+        #endregion Eventos      
+        
     }
 }
