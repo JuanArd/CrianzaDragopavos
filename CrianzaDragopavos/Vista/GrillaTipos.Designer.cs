@@ -41,15 +41,17 @@
             dgvTipos.AllowUserToResizeRows = false;
             dgvTipos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvTipos.Location = new Point(12, 55);
+            dgvTipos.MultiSelect = false;
             dgvTipos.Name = "dgvTipos";
             dgvTipos.ReadOnly = true;
             dgvTipos.RowHeadersVisible = false;
             dgvTipos.RowTemplate.Height = 25;
+            dgvTipos.ScrollBars = ScrollBars.Vertical;
             dgvTipos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvTipos.Size = new Size(220, 150);
             dgvTipos.TabIndex = 1;
-            dgvTipos.DoubleClick += dgvTipos_DoubleClick;
-            dgvTipos.KeyDown += dgvTipos_KeyDown;
+            dgvTipos.DoubleClick += DgvTipos_DoubleClick;
+            dgvTipos.KeyDown += DgvTipos_KeyDown;
             // 
             // txtFiltroTipos
             // 
@@ -57,8 +59,8 @@
             txtFiltroTipos.Name = "txtFiltroTipos";
             txtFiltroTipos.Size = new Size(219, 23);
             txtFiltroTipos.TabIndex = 0;
-            txtFiltroTipos.TextChanged += txtFiltroTipos_TextChanged;
-            txtFiltroTipos.KeyDown += txtFiltroTipos_KeyDown;
+            txtFiltroTipos.TextChanged += TxtFiltroTipos_TextChanged;
+            txtFiltroTipos.KeyDown += TxtFiltroTipos_KeyDown;
             // 
             // GrillaTipos
             // 

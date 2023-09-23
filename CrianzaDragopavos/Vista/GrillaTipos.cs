@@ -8,13 +8,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using CrianzaDragopavos.Modelo;
 
 namespace CrianzaDragopavos.Vista
 {
     public partial class GrillaTipos : Form
     {
-        DataTable sourceData;
+        readonly DataTable sourceData;
         public DataGridViewCellCollection ValueSelected { get; set; }
 
         public GrillaTipos(List<Tipo> tipos)
@@ -25,11 +24,12 @@ namespace CrianzaDragopavos.Vista
             dgvTipos.Columns[0].Visible = false;
             dgvTipos.Columns[2].Visible = false;
             dgvTipos.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            ValueSelected = dgvTipos.Rows[0].Cells;
         }
 
-        private DataTable CrearDataTable(List<Tipo> tipos)
+        private static DataTable CrearDataTable(List<Tipo> tipos)
         {
-            DataTable dt = new DataTable();
+            DataTable dt = new();
 
             dt.Columns.Add("Id", typeof(int));
             dt.Columns.Add("Nombre", typeof(string));
@@ -51,13 +51,13 @@ namespace CrianzaDragopavos.Vista
             txtFiltroTipos.Focus();
         }
 
-        private void txtFiltroTipos_TextChanged(object sender, EventArgs e)
+        private void TxtFiltroTipos_TextChanged(object sender, EventArgs e)
         {
             DataView dv = sourceData.DefaultView;
             dv.RowFilter = string.Format("Nombre Like '%{0}%'", txtFiltroTipos.Text);
         }
 
-        private void dgvTipos_DoubleClick(object sender, EventArgs e)
+        private void DgvTipos_DoubleClick(object sender, EventArgs e)
         {
             int selectedRowCount = dgvTipos.Rows.GetRowCount(DataGridViewElementStates.Selected);
 
@@ -71,7 +71,7 @@ namespace CrianzaDragopavos.Vista
             this.Close();
         }
 
-        private void dgvTipos_KeyDown(object sender, KeyEventArgs e)
+        private void DgvTipos_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
@@ -90,7 +90,7 @@ namespace CrianzaDragopavos.Vista
             }
         }
 
-        private void txtFiltroTipos_KeyDown(object sender, KeyEventArgs e)
+        private void TxtFiltroTipos_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {

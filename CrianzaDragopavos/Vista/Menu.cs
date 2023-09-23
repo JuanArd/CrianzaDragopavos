@@ -102,9 +102,9 @@ namespace CrianzaDragopavos
 
                 string alias = dt.Rows[r][2].ToString() ?? string.Empty;
                 string nombre = dt.Rows[r][3].ToString() ?? string.Empty;
-                byte[] imagen = (Byte[])dt.Rows[r][4];
+                byte[] imagen = dt.Rows[r][4] != DBNull.Value ? (Byte[])dt.Rows[r][4] : Array.Empty<byte>();
                 string sigla = dt.Rows[r][5].ToString() ?? string.Empty;
-                int generacion = Convert.ToInt32(dt.Rows[r][6].ToString());
+                int generacion = dt.Rows[r][6] != DBNull.Value ? Convert.ToInt32(dt.Rows[r][6].ToString()) : 0;
 
                 tipos.Add(new Tipo
                 {

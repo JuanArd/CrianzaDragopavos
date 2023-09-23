@@ -6,9 +6,9 @@ namespace CrianzaDragopavos.Controlador
 {
     public class MasterConnection
     {
-        public static string connString = ConfigurationManager.ConnectionStrings["myConn"].ConnectionString;
         //public static string connString = @"Data source=localhost\SQLEXPRESS;Initial Catalog=crianza_dragopavos;Integrated Security=true";
-        public static SqlConnection conn = new SqlConnection(connString);
+        private static readonly string connectionString = ConfigurationManager.ConnectionStrings["myConn"].ConnectionString;
+        public static SqlConnection conn = new(connectionString);
 
         public static void Open()
         {
