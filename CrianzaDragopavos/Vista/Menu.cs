@@ -8,9 +8,10 @@ namespace CrianzaDragopavos
     public partial class Menu : Form
     {
         int TipoMontura = 0;
+        readonly List<Montura> monturasHembra = new();
+        readonly List<Montura> monturasMacho = new();
+
         List<Cruce> cruces = new();
-        List<Montura> monturasHembra = new();
-        List<Montura> monturasMacho = new();
         List<Tipo> tipos = new();
         List<TipoMontura> tiposMontura = new();
 
@@ -30,6 +31,7 @@ namespace CrianzaDragopavos
             cmbTipoMontura.DisplayMember = "Nombre";
             cmbTipoMontura.ValueMember = "Id";
             cmbTipoMontura.SelectedIndex = 0;
+
             TipoMontura = 1;
         }
 
@@ -55,43 +57,25 @@ namespace CrianzaDragopavos
             return tipoMonturas;
         }
 
-        private List<Montura> CargarMonturas()
+        private void CargarMonturas()
         {
             DataTable dt = new();
-            List<Montura> monturas = new();
-
+            
             CrianzaMonturas.ObtenerMonturas(ref dt, TipoMontura);
-
-            for (int r = 0; r < dt.Rows.Count; r++)
-            {
-                monturas.Add(new Montura
-                {
-                    Id = Convert.ToInt32(dt.Rows[r][0].ToString()),
-                    Nombre = dt.Rows[r][1].ToString() ?? string.Empty,
-                    Salvaje = Convert.ToBoolean(dt.Rows[r][2].ToString()),
-                    Sexo = dt.Rows[r][3].ToString() ?? string.Empty,
-                    TipoId = Convert.ToInt32(dt.Rows[r][5].ToString()),
-                    Predispuesto = Convert.ToBoolean(dt.Rows[r][6].ToString()),
-                    Padre = Convert.ToInt32(dt.Rows[r][7].ToString()) == 0 ? null : CargarMontura(Convert.ToInt32(dt.Rows[r][7].ToString())),
-                    Madre = Convert.ToInt32(dt.Rows[r][8].ToString()) == 0 ? null : CargarMontura(Convert.ToInt32(dt.Rows[r][8].ToString())),
-                    Reproducciones = Convert.ToInt32(dt.Rows[r][9].ToString()),
-                    MaxReproducciones = Convert.ToInt32(dt.Rows[r][10].ToString()),
-                    Esteril = Convert.ToBoolean(dt.Rows[r][11].ToString())
-                });
-            }
 
             monturasMacho.Clear();
             monturasMacho.Add(new Montura { Id = 0, Nombre = "", TipoId = 0, Padre = null, Madre = null });
             monturasHembra.Clear();
             monturasHembra.Add(new Montura { Id = 0, Nombre = "", TipoId = 0, Padre = null, Madre = null });
 
-            foreach (Montura m in monturas)
+            for (int r = 0; r < dt.Rows.Count; r++)
             {
-                Montura monturaActual = m;
-                if (m.Sexo == "M")
-                    monturasMacho.Add(monturaActual);
+                Montura montura = CargarMontura(Convert.ToInt32(dt.Rows[r][0].ToString()));
+
+                if (montura.Sexo == "M")
+                    monturasMacho.Add(montura);
                 else
-                    monturasHembra.Add(monturaActual);
+                    monturasHembra.Add(montura);
             }
 
             cmbPadre.DataSource = monturasMacho;
@@ -103,32 +87,6 @@ namespace CrianzaDragopavos
             cmbMadre.DisplayMember = "Nombre";
             cmbMadre.ValueMember = "Id";
             cmbMadre.SelectedIndex = 0;
-
-            return monturas;
-        }
-
-        private Montura CargarMontura(int id)
-        {
-            DataTable dt = new();
-
-            CrianzaMonturas.ObtenerMontura(ref dt, id);
-
-            Montura montura = new()
-            {
-                Id = Convert.ToInt32(dt.Rows[0][0].ToString()),
-                Nombre = dt.Rows[0][1].ToString() ?? string.Empty,
-                Salvaje = Convert.ToBoolean(dt.Rows[0][2].ToString()),
-                Sexo = dt.Rows[0][3].ToString(),
-                TipoId = Convert.ToInt32(dt.Rows[0][5].ToString()),
-                Predispuesto = Convert.ToBoolean(dt.Rows[0][6].ToString()),
-                Padre = Convert.ToInt32(dt.Rows[0][7].ToString()) == 0 ? null : CargarMontura(Convert.ToInt32(dt.Rows[0][7].ToString())),
-                Madre = Convert.ToInt32(dt.Rows[0][8].ToString()) == 0 ? null : CargarMontura(Convert.ToInt32(dt.Rows[0][8].ToString())),
-                Reproducciones = Convert.ToInt32(dt.Rows[0][9].ToString()),
-                MaxReproducciones = Convert.ToInt32(dt.Rows[0][10].ToString()),
-                Esteril = Convert.ToBoolean(dt.Rows[0][11].ToString())
-            };
-
-            return montura;
         }
 
         private List<Tipo> CargarTipos()
@@ -147,7 +105,6 @@ namespace CrianzaDragopavos
                 byte[] imagen = (Byte[])dt.Rows[r][4];
                 string sigla = dt.Rows[r][5].ToString() ?? string.Empty;
                 int generacion = Convert.ToInt32(dt.Rows[r][6].ToString());
-
 
                 tipos.Add(new Tipo
                 {
@@ -188,6 +145,30 @@ namespace CrianzaDragopavos
         #endregion Inicializadores
 
         #region Metodos
+
+        private Montura CargarMontura(int id)
+        {
+            DataTable dt = new();
+
+            CrianzaMonturas.ObtenerMontura(ref dt, id);
+
+            Montura montura = new()
+            {
+                Id = Convert.ToInt32(dt.Rows[0][0].ToString()),
+                Nombre = dt.Rows[0][1].ToString() ?? string.Empty,
+                Salvaje = Convert.ToBoolean(dt.Rows[0][2].ToString()),
+                Sexo = dt.Rows[0][3].ToString(),
+                TipoId = Convert.ToInt32(dt.Rows[0][5].ToString()),
+                Predispuesto = Convert.ToBoolean(dt.Rows[0][6].ToString()),
+                Padre = Convert.ToInt32(dt.Rows[0][7].ToString()) == 0 ? null : CargarMontura(Convert.ToInt32(dt.Rows[0][7].ToString())),
+                Madre = Convert.ToInt32(dt.Rows[0][8].ToString()) == 0 ? null : CargarMontura(Convert.ToInt32(dt.Rows[0][8].ToString())),
+                Reproducciones = Convert.ToInt32(dt.Rows[0][9].ToString()),
+                MaxReproducciones = Convert.ToInt32(dt.Rows[0][10].ToString()),
+                Esteril = Convert.ToBoolean(dt.Rows[0][11].ToString())
+            };
+
+            return montura;
+        }
 
         private int ObtenerCruce(int tipo1, int tipo2)
         {
@@ -643,11 +624,8 @@ namespace CrianzaDragopavos
 
         private void CmbTipoMontura_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-            monturasHembra = new List<Montura>();
-            monturasMacho = new List<Montura>();
-
             TipoMontura = ((TipoMontura)cmbTipoMontura.SelectedItem).Id;
+            
             tipos = CargarTipos();
             cruces = CargarCruces();
         }
