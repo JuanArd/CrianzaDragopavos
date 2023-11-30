@@ -33,6 +33,8 @@ namespace CrianzaDragopavos
             cmbTipoMontura.SelectedIndex = 0;
 
             TipoMontura = 1;
+
+            CargarMonturas();
         }
 
         private static List<TipoMontura> CargarTiposMontura()

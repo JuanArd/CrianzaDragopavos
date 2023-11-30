@@ -12,7 +12,7 @@ ORDER BY Nombre;
 
 --SELECT * FROM crianza_monturas.dbo.Montura WHERE Esteril = 1 ORDER BY Nombre
 
---UPDATE crianza_monturas.dbo.Montura SET Reproducible = 1 WHERE Id IN (546, 569);
+--UPDATE crianza_monturas.dbo.Montura SET Reproducible = 1 WHERE Id IN (542);
 
 
 /* SCROLL DOFUS QUERY */
@@ -43,7 +43,7 @@ FROM crianza_monturas.dbo.Montura
 WHERE Reproducciones != MaxReproducciones
 AND Esteril = 0;
 
---UPDATE Montura SET Esteril = 1 WHERE Nombre IN ();
+--UPDATE crianza_monturas.dbo.Montura SET Esteril = 1 WHERE Nombre IN ('PELIR-87','PELIR-88','PELIR-89');
 
 /* MONTURAS PURAS */
 SELECT *
