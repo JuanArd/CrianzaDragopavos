@@ -15,5 +15,6 @@
     [Fecundada]         BIT          NULL,
     [CantPureza]        INT          NULL,
     CONSTRAINT [PK_Montura] PRIMARY KEY CLUSTERED ([Id] ASC)
-);
+)
+WITH (DATA_COMPRESSION = ROW);
 

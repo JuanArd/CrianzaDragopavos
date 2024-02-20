@@ -2,4 +2,7 @@
 	@Padre INT,
 	@Madre INT
 AS
-	UPDATE Montura SET Fecundada = 0 WHERE Id IN (@Padre, @Madre);
+	SET QUOTED_IDENTIFIER ON
+	SET NOCOUNT ON
+
+	UPDATE dbo.Montura SET Fecundada = 0 WHERE Id IN (@Padre, @Madre);

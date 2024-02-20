@@ -1,6 +1,8 @@
 ﻿CREATE PROCEDURE ObtenerTipo
 	@TipoMontura INT
 AS
+	SET NOCOUNT ON
+
 	SELECT * 
-	 FROM Tipo
+	 FROM dbo.Tipo
 	WHERE TipoMonturaId = @TipoMontura;

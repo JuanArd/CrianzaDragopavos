@@ -7,5 +7,6 @@
     [Sigla]         VARCHAR (10) NULL,
     [Generacion]    INT          NULL,
     CONSTRAINT [PK_Tipo_Id_TipoMonturaId] PRIMARY KEY CLUSTERED ([TipoMonturaId] ASC, [Id] ASC)
-);
+)
+WITH (DATA_COMPRESSION = ROW);
 

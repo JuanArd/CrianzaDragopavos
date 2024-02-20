@@ -6,5 +6,6 @@
     [CriaId]            INT      NULL,
     [FechaNacimiento]   DATETIME NULL,
     CONSTRAINT [PK_Reproducciones] PRIMARY KEY CLUSTERED ([Id] ASC)
-);
+)
+WITH (DATA_COMPRESSION = ROW);
 

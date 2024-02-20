@@ -1,8 +1,10 @@
 ﻿CREATE PROCEDURE [dbo].[ObtenerMonturas]
 	@TipoMontura INT
 AS
+	SET NOCOUNT ON
+
 	SELECT * 
-	 FROM Montura
+	 FROM dbo.Montura
 	WHERE TipoMonturaId = @TipoMontura
 		AND (Esteril = 0
 			AND Reproducible = 1)
