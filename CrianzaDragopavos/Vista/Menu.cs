@@ -7,7 +7,7 @@ namespace CrianzaDragopavos
 {
     public partial class Menu : Form
     {
-        int tipoMontura = 0;
+        int tipoMontura;
         readonly List<Montura> monturasHembra = new();
         readonly List<Montura> monturasMacho = new();
 
@@ -386,7 +386,10 @@ namespace CrianzaDragopavos
                     consecutivo++;
                 }
             }
-            catch { }
+            catch 
+            {
+                MessageBox.Show("No fue posible mostrar los resultados");
+            }
         }
 
         private void CerrarReproduccion()
@@ -452,7 +455,6 @@ namespace CrianzaDragopavos
             // Mostrando Resultados
             List<Resultado> resultados = new();
             int i = 0;
-            string resultado = string.Empty;
             double porcAnterior = 0;
 
             while (i < posiblesResultados)

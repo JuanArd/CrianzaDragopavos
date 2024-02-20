@@ -5,8 +5,8 @@ namespace CrianzaDragopavos.Vista
     public partial class CrearCria : Form
     {
         private string nombre;
-        public string sexo;
-        public bool predispuesto;
+        private string sexo;
+        private bool predispuesto;
 
         public string Nombre {
             get { return nombre; }
