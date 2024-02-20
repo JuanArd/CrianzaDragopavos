@@ -38,9 +38,13 @@ namespace CrianzaDragopavos.Vista
             foreach (Tipo tipo in tipos)
             {
                 if (tipo.Id != 0)
+                {
                     dt.Rows.Add(tipo.Id, tipo.Nombre, tipo.Imagen);
+                }
                 else
+                {
                     dt.Rows.Add(tipo.Id, "", null);
+                }
             }
 
             return dt;

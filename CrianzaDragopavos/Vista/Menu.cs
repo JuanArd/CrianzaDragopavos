@@ -75,9 +75,13 @@ namespace CrianzaDragopavos
                 Montura montura = CargarMontura(Convert.ToInt32(dt.Rows[r][0].ToString()));
 
                 if (montura.Sexo == "M")
+                {
                     monturasMacho.Add(montura);
+                }
                 else
+                {
                     monturasHembra.Add(montura);
+                }
             }
 
             cmbPadre.DataSource = monturasMacho;
@@ -177,16 +181,12 @@ namespace CrianzaDragopavos
             int resultado = 0;
             Cruce? cruce = cruces.Find(x => x.Tipo1 == tipo1 && x.Tipo2 == tipo2);
 
-            if (cruce != null)
-                resultado = cruce.TipoResultado;
-
-            return resultado;
+            return cruce != null ? cruce.TipoResultado : resultado;
         }
 
         private void CargarPadresMadres(Montura raiz, string prefix, int generacion)
         {
-            if (raiz.Id == 0 || raiz == null)
-                return;
+            if (raiz.Id == 0 || raiz == null) return;
 
             Montura currRaiz = raiz;
 
@@ -237,9 +237,13 @@ namespace CrianzaDragopavos
             if (generacion == 3)
             {
                 if (prefix == "P")
+                {
                     lblReproduccionesPadre.Text = raiz.Reproducciones.ToString() + " / " + raiz.MaxReproducciones;
+                }
                 else if (prefix == "M")
+                {
                     lblReproduccionesMadre.Text = raiz.Reproducciones.ToString() + " / " + raiz.MaxReproducciones;
+                }
             }
         }
 
@@ -251,7 +255,9 @@ namespace CrianzaDragopavos
             pbx.Tag = montura.TipoId;
 
             if (clases == null || montura.TipoId != 0)
+            {
                 pbx.Image = null;
+            }
             else
             {
                 Byte[] image = clases.Find(x => x.Id == montura.TipoId)!.Imagen;
@@ -318,12 +324,19 @@ namespace CrianzaDragopavos
                         case 4:
                             puntos = 1;
                             break;
+                        default:
+                            puntos = 0;
+                            break;
                     }
 
                     if (sufix.StartsWith("P"))
+                    {
                         puntosPadre[tipoMonturaActual] += puntos;
+                    }
                     else
+                    {
                         puntosMadre[tipoMonturaActual] += puntos;
+                    }
                 }
             }
         }
@@ -430,11 +443,9 @@ namespace CrianzaDragopavos
             CargarCantTipos(ref cantTiposPadre, ref cantTiposMadre, ref cantTiposTotal, ref cantTiposPorcentaje);
 
             // Aumentando cantidad dependiendo jerarquia y predisposicion
-            if (madre.Predispuesto)
-                cantTiposPadre[madre.TipoId] += 10;
+            if (madre.Predispuesto) cantTiposPadre[madre.TipoId] += 10;
 
-            if (padre.Predispuesto)
-                cantTiposMadre[padre.TipoId] += 10;
+            if (padre.Predispuesto) cantTiposMadre[padre.TipoId] += 10;
 
             CargarPuntosJerarquia(ref cantTiposPadre, ref cantTiposMadre);
 
@@ -491,11 +502,9 @@ namespace CrianzaDragopavos
             {
                 cantTiposPorcentaje[k] = Math.Round(cantTiposTotal[k] * 10000) / 100;
 
-                if (cantTiposPorcentaje[k] > 0)
-                    posiblesResultados++;
+                if (cantTiposPorcentaje[k] > 0) posiblesResultados++;
 
-                if (cantTiposPorcentaje[k] > porcentajeMayor)
-                    porcentajeMayor = cantTiposPorcentaje[k];
+                if (cantTiposPorcentaje[k] > porcentajeMayor) porcentajeMayor = cantTiposPorcentaje[k];
             }
         }
 
