@@ -1,8 +1,13 @@
 ﻿CREATE PROCEDURE ObtenerTipo
 	@TipoMontura INT
 AS
-	SET NOCOUNT ON
+	SET NOCOUNT ON;
 
-	SELECT * 
+	SELECT TipoMonturaId,
+		   Id,
+		   Alias,
+		   Imagen,
+		   Sigla,
+		   Generacion
 	 FROM dbo.Tipo
 	WHERE TipoMonturaId = @TipoMontura;
