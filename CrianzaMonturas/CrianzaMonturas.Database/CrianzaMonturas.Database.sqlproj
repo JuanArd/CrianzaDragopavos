@@ -56,5 +56,22 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="Tablas" />
+    <Folder Include="SP" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Tablas\CruceMontura.sql" />
+    <Build Include="Tablas\Montura.sql" />
+    <Build Include="Tablas\Reproducciones.sql" />
+    <Build Include="Tablas\Tipo.sql" />
+    <Build Include="Tablas\TipoMontura.sql" />
+    <Build Include="SP\ActualizarReproduccion.sql" />
+    <Build Include="SP\CerrarReproduccion.sql" />
+    <Build Include="SP\InsertarCria.sql" />
+    <Build Include="SP\InsertarReproduccion.sql" />
+    <Build Include="SP\ObtenerCruces.sql" />
+    <Build Include="SP\ObtenerMontura.sql" />
+    <Build Include="SP\ObtenerMonturas.sql" />
+    <Build Include="SP\ObtenerTipo.sql" />
   </ItemGroup>
 </Project>
