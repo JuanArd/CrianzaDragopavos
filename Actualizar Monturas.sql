@@ -22,7 +22,7 @@ FROM crianza_monturas.dbo.Montura M
 WHERE M.Esteril = 0 
  AND M.Fecundada = 0
  AND M.Reproducible = 1
-ORDER BY T.Id, M.Sexo, M.Nombre
+ORDER BY T.Id, M.Sexo, M.Nombre;
 
 
 
@@ -49,7 +49,7 @@ AND Esteril = 0;
 SELECT *
 FROM crianza_monturas.dbo.Montura
 WHERE Nombre LIKE '%-PUR%'
- AND Esteril = 0
+ AND Esteril = 0;
 
 /* ACTUALIZACION PUREZA
 UPDATE crianza_monturas.dbo.Montura

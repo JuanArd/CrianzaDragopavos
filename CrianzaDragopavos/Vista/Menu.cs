@@ -7,7 +7,7 @@ namespace CrianzaDragopavos
 {
     public partial class Menu : Form
     {
-        int TipoMontura = 0;
+        int tipoMontura = 0;
         readonly List<Montura> monturasHembra = new();
         readonly List<Montura> monturasMacho = new();
 
@@ -32,7 +32,7 @@ namespace CrianzaDragopavos
             cmbTipoMontura.ValueMember = "Id";
             cmbTipoMontura.SelectedIndex = 0;
 
-            TipoMontura = 1;
+            tipoMontura = 1;
 
             CargarMonturas();
         }
@@ -63,7 +63,7 @@ namespace CrianzaDragopavos
         {
             DataTable dt = new();
             
-            CrianzaMonturas.ObtenerMonturas(ref dt, TipoMontura);
+            CrianzaMonturas.ObtenerMonturas(ref dt, tipoMontura);
 
             monturasMacho.Clear();
             monturasMacho.Add(new Montura { Id = 0, Nombre = "", TipoId = 0, Padre = null, Madre = null });
@@ -96,7 +96,7 @@ namespace CrianzaDragopavos
             DataTable dt = new();
             List<Tipo> tipos = new();
 
-            CrianzaMonturas.ObtenerTipo(ref dt, TipoMontura);
+            CrianzaMonturas.ObtenerTipo(ref dt, tipoMontura);
 
             for (int r = 0; r < dt.Rows.Count; r++)
             {
@@ -129,7 +129,7 @@ namespace CrianzaDragopavos
             DataTable dt = new();
             List<Cruce> cruces = new();
 
-            CrianzaMonturas.ObtenerCruces(ref dt, TipoMontura);
+            CrianzaMonturas.ObtenerCruces(ref dt, tipoMontura);
 
             for (int r = 0; r < dt.Rows.Count; r++)
             {
@@ -183,24 +183,24 @@ namespace CrianzaDragopavos
             return resultado;
         }
 
-        private void CargarPadresMadres(Montura pRaiz, string pPrefix, int generacion)
+        private void CargarPadresMadres(Montura raiz, string prefix, int generacion)
         {
-            if (pRaiz.Id == 0 || pRaiz == null)
+            if (raiz.Id == 0 || raiz == null)
                 return;
 
-            Montura raiz = pRaiz;
+            Montura currRaiz = raiz;
 
-            string pbxPrefix = pPrefix;
+            string pbxPrefix = prefix;
 
-            CargarLabelReproducciones(pPrefix, generacion, raiz);
+            CargarLabelReproducciones(prefix, generacion, currRaiz);
 
-            CargarImagen(raiz, pbxPrefix);
+            CargarImagen(currRaiz, pbxPrefix);
 
-            CargarPadre(generacion, raiz, pbxPrefix);
+            CargarPadre(generacion, currRaiz, pbxPrefix);
 
-            pbxPrefix = pPrefix;
+            pbxPrefix = prefix;
 
-            CargarMadre(generacion, raiz, pbxPrefix);
+            CargarMadre(generacion, currRaiz, pbxPrefix);
 
         }
 
@@ -232,13 +232,13 @@ namespace CrianzaDragopavos
             }
         }
 
-        private void CargarLabelReproducciones(string pPrefix, int generacion, Montura raiz)
+        private void CargarLabelReproducciones(string prefix, int generacion, Montura raiz)
         {
             if (generacion == 3)
             {
-                if (pPrefix == "P")
+                if (prefix == "P")
                     lblReproduccionesPadre.Text = raiz.Reproducciones.ToString() + " / " + raiz.MaxReproducciones;
-                else if (pPrefix == "M")
+                else if (prefix == "M")
                     lblReproduccionesMadre.Text = raiz.Reproducciones.ToString() + " / " + raiz.MaxReproducciones;
             }
         }
@@ -247,7 +247,7 @@ namespace CrianzaDragopavos
         {
 
             string nombrePbx = "pbx" + sufixPbx;
-            PictureBox pbx = (PictureBox)this.Controls[nombrePbx];
+            PictureBox pbx = (PictureBox)this.Controls[nombrePbx]!;
             pbx.Tag = montura.TipoId;
 
             if (tipos == null || montura.TipoId != 0)
@@ -260,15 +260,15 @@ namespace CrianzaDragopavos
             }
         }
 
-        private void LimpiarArbol(string pPrefix)
+        private void LimpiarArbol(string prefix)
         {
-            string prefix = "pbx" + pPrefix;
+            string pbxPrefix = "pbx" + prefix;
 
             foreach (Control ctrl in this.Controls)
             {
                 if (ctrl is PictureBox pbx)
                 {
-                    if (pbx.Name.StartsWith(prefix) && pbx.Name != prefix)
+                    if (pbx.Name.StartsWith(pbxPrefix) && pbx.Name != pbxPrefix)
                     {
                         pbx.Tag = null;
                         pbx.Image = null;
@@ -277,15 +277,15 @@ namespace CrianzaDragopavos
             }
         }
 
-        private void RellenarPbx(string pPrefix)
+        private void RellenarPbx(string prefix)
         {
-            string prefix = "pbx" + pPrefix;
+            string pbxPrefix = "pbx" + prefix;
 
             foreach (Control ctrl in this.Controls)
             {
                 if (ctrl is PictureBox pbx)
                 {
-                    if (pbx.Name.StartsWith(prefix) && pbx.Tag == null)
+                    if (pbx.Name.StartsWith(pbxPrefix) && pbx.Tag == null)
                     {
                         pbx.Tag = 0;
                     }
@@ -302,7 +302,7 @@ namespace CrianzaDragopavos
                 if (ctrl is PictureBox pbx)
                 {
                     string sufix = pbx.Name.Replace("pbx", "");
-                    int tipoMontura = (int)pbx.Tag;
+                    int tipoMontura = (int)pbx.Tag!;
 
                     switch (sufix.Length)
                     {
@@ -318,8 +318,6 @@ namespace CrianzaDragopavos
                         case 4:
                             puntos = 1;
                             break;
-                        default:
-                            break;
                     }
 
                     if (sufix.StartsWith("P"))
@@ -330,7 +328,7 @@ namespace CrianzaDragopavos
             }
         }
 
-        private void CrearFormsResultados(List<Resultado> pResultados)
+        private void CrearFormsResultados(List<Resultado> resultados)
         {
             try
             {
@@ -341,7 +339,7 @@ namespace CrianzaDragopavos
                 flpResultados.Visible = true;
                 flpResultados.BringToFront();
 
-                foreach (Resultado res in pResultados)
+                foreach (Resultado res in resultados)
                 {
                     Label lblNombre = new();
                     Label lblPorcentaje = new();
@@ -356,7 +354,6 @@ namespace CrianzaDragopavos
                     lblNombre.Dock = DockStyle.Bottom;
                     lblNombre.TextAlign = ContentAlignment.MiddleLeft;
                     lblNombre.Cursor = Cursors.Hand;
-                    //lblNombre.BorderStyle = BorderStyle.FixedSingle;
 
                     lblPorcentaje.Text = res.Porcentaje.ToString() + " %";
                     lblPorcentaje.Name = "lblPorcentaje" + consecutivo.ToString();
@@ -598,7 +595,7 @@ namespace CrianzaDragopavos
 
             if (frmCria == DialogResult.OK)
             {
-                bool inserted = CrianzaMonturas.InsertarCria(frmCrear.Nombre, frmCrear.Sexo, TipoMontura, pCria.Id, frmCrear.Predispuesto,
+                bool inserted = CrianzaMonturas.InsertarCria(frmCrear.Nombre, frmCrear.Sexo, tipoMontura, pCria.Id, frmCrear.Predispuesto,
                     pPadre.Id, pMadre.Id, out int idCria);
 
                 if (inserted)
@@ -626,7 +623,7 @@ namespace CrianzaDragopavos
 
         private void CmbTipoMontura_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TipoMontura = ((TipoMontura)cmbTipoMontura.SelectedItem).Id;
+            tipoMontura = ((TipoMontura)cmbTipoMontura.SelectedItem).Id;
             
             tipos = CargarTipos();
             cruces = CargarCruces();

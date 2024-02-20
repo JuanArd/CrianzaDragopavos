@@ -1,30 +1,38 @@
 ﻿using CrianzaDragopavos.Modelo;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace CrianzaDragopavos.Vista
 {
     public partial class CrearCria : Form
     {
-        public string Nombre;
-        public string Sexo;
-        public bool Predispuesto;
-        
+        private string nombre;
+        public string sexo;
+        public bool predispuesto;
+
+        public string Nombre {
+            get { return nombre; }
+            set { nombre = value; } 
+        }
+
+        public string Sexo
+        {
+            get { return sexo; }
+            set { sexo = value; }
+        }
+
+        public bool Predispuesto
+        {
+            get { return predispuesto; }
+            set { predispuesto = value; }
+        }
+
         public CrearCria(Tipo tipo)
         {
             InitializeComponent();
             
-            Nombre = tipo.Nombre;
-            Sexo = string.Empty;
+            nombre = tipo.Nombre;
+            sexo = string.Empty;
 
-            txtTipo.Text = Nombre;
+            txtTipo.Text = nombre;
             txtNombre.Text = tipo.Sigla;
         }
 
