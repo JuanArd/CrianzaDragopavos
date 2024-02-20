@@ -12,7 +12,7 @@ namespace CrianzaDragopavos
         readonly List<Montura> monturasMacho = new();
 
         List<Cruce> cruces = new();
-        List<Tipo> tipos = new();
+        List<Tipo> clases = new();
         List<TipoMontura> tiposMontura = new();
 
         #region Inicializadores
@@ -127,13 +127,13 @@ namespace CrianzaDragopavos
         private List<Cruce> CargarCruces()
         {
             DataTable dt = new();
-            List<Cruce> cruces = new();
+            List<Cruce> posiblesCruces = new();
 
             CrianzaMonturas.ObtenerCruces(ref dt, tipoMontura);
 
             for (int r = 0; r < dt.Rows.Count; r++)
             {
-                cruces.Add(new Cruce
+                posiblesCruces.Add(new Cruce
                 {
                     Tipo1 = Convert.ToInt32(dt.Rows[r][2].ToString()),
                     Tipo2 = Convert.ToInt32(dt.Rows[r][3].ToString()),
@@ -141,7 +141,7 @@ namespace CrianzaDragopavos
                 });
             }
 
-            return cruces;
+            return posiblesCruces;
         }
 
         #endregion Inicializadores
@@ -250,11 +250,11 @@ namespace CrianzaDragopavos
             PictureBox pbx = (PictureBox)this.Controls[nombrePbx]!;
             pbx.Tag = montura.TipoId;
 
-            if (tipos == null || montura.TipoId != 0)
+            if (clases == null || montura.TipoId != 0)
                 pbx.Image = null;
             else
             {
-                Byte[] image = tipos.Find(x => x.Id == montura.TipoId)!.Imagen;
+                Byte[] image = clases.Find(x => x.Id == montura.TipoId)!.Imagen;
                 MemoryStream ms = new(image);
                 pbx.Image = Image.FromStream(ms);
             }
@@ -302,7 +302,7 @@ namespace CrianzaDragopavos
                 if (ctrl is PictureBox pbx)
                 {
                     string sufix = pbx.Name.Replace("pbx", "");
-                    int tipoMontura = (int)pbx.Tag!;
+                    int tipoMonturaActual = (int)pbx.Tag!;
 
                     switch (sufix.Length)
                     {
@@ -321,9 +321,9 @@ namespace CrianzaDragopavos
                     }
 
                     if (sufix.StartsWith("P"))
-                        puntosPadre[tipoMontura] += puntos;
+                        puntosPadre[tipoMonturaActual] += puntos;
                     else
-                        puntosMadre[tipoMontura] += puntos;
+                        puntosMadre[tipoMonturaActual] += puntos;
                 }
             }
         }
@@ -463,7 +463,7 @@ namespace CrianzaDragopavos
                 {
                     if (cantTiposPorcentaje[c] == porcentajeMayor)
                     {
-                        Tipo Tipo = tipos.Find(x => x.Id == c) ?? tipos.First();
+                        Tipo Tipo = clases.Find(x => x.Id == c) ?? clases.First();
                         resultados.Add(new Resultado(Tipo, cantTiposPorcentaje[c]));
                         i++;
                     }
@@ -518,7 +518,7 @@ namespace CrianzaDragopavos
 
         private void CargarCantTipos(ref Dictionary<int, double> cantTiposPadre, ref Dictionary<int, double> cantTiposMadre, ref Dictionary<int, double> cantTiposTotal, ref Dictionary<int, double> cantTiposPorcentaje)
         {
-            foreach (Tipo tipo in tipos)
+            foreach (Tipo tipo in clases)
             {
                 cantTiposPadre.Add(tipo.Id, 0);
                 cantTiposMadre.Add(tipo.Id, 0);
@@ -627,7 +627,7 @@ namespace CrianzaDragopavos
         {
             tipoMontura = ((TipoMontura)cmbTipoMontura.SelectedItem).Id;
             
-            tipos = CargarTipos();
+            clases = CargarTipos();
             cruces = CargarCruces();
         }
 
@@ -672,7 +672,7 @@ namespace CrianzaDragopavos
         private void Pbx_Click(object sender, EventArgs e)
         {
             PictureBox pbx = (PictureBox)sender;
-            GrillaTipos frmGrilla = new(tipos);
+            GrillaTipos frmGrilla = new(clases);
             DialogResult result = frmGrilla.ShowDialog();
 
             if (result == DialogResult.OK)
