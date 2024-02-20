@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[InsertarReproduccion]
-	@Padre int,
-	@Madre int
+	@Padre INT,
+	@Madre INT
 AS
 	INSERT INTO Reproducciones
 	VALUES (@Padre, @Madre, SYSDATETIME(), NULL, NULL);

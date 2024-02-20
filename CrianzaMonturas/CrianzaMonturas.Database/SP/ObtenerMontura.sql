@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE ObtenerMontura
-	@Id int
+	@Id INT
 AS
 	SELECT *
 	 FROM Montura

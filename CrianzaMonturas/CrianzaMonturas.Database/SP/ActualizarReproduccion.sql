@@ -1,9 +1,9 @@
 ﻿CREATE   PROCEDURE [dbo].[ActualizarReproduccion]
-	@Cria int,
-	@Padre int,
-	@Madre int
+	@Cria INT,
+	@Padre INT,
+	@Madre INT
 AS
-	DECLARE @CantReprod int = (SELECT COUNT(1) 
+	DECLARE @CantReprod INT = (SELECT COUNT(1) 
 								FROM Reproducciones 
 							   WHERE MonturaMachoId = @Padre
 								AND MonturaHembraId = @Madre
@@ -11,7 +11,7 @@ AS
 
 	IF @CantReprod = 0
 		BEGIN
-			DECLARE @FechaReprod date = (SELECT MAX(FechaReproduccion) FROM Reproducciones
+			DECLARE @FechaReprod DATE = (SELECT MAX(FechaReproduccion) FROM Reproducciones
 											WHERE MonturaMachoId = @Padre
 												AND MonturaHembraId = @Madre);
 
@@ -24,4 +24,4 @@ AS
 				WHERE MonturaMachoId = @Padre
 					AND MonturaHembraId = @Madre
 					AND CriaId IS NULL;
-		END
+		END;

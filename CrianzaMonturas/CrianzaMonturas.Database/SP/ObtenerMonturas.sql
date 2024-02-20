@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[ObtenerMonturas]
-	@TipoMontura int
-as
+	@TipoMontura INT
+AS
 	SELECT * 
 	 FROM Montura
 	WHERE TipoMonturaId = @TipoMontura
@@ -9,4 +9,4 @@ as
 		OR (Esteril = 1
 			AND Fecundada = 1)
 	ORDER BY TipoId,
-			Nombre
+			Nombre;

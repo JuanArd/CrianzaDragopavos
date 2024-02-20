@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[ObtenerCruces]
-	@TipoMontura int
-as
+	@TipoMontura INT
+AS
 	SELECT * 
 	 FROM CruceMontura
 	WHERE TipoMonturaId = @TipoMontura;

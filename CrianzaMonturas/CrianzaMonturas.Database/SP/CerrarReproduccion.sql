@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE CerrarReproduccion
-	@Padre int,
-	@Madre int
+	@Padre INT,
+	@Madre INT
 AS
 	UPDATE Montura SET Fecundada = 0 WHERE Id IN (@Padre, @Madre);

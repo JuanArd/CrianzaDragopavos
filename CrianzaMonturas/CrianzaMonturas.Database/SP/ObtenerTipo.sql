@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE ObtenerTipo
-	@TipoMontura int
-as
+	@TipoMontura INT
+AS
 	SELECT * 
 	 FROM Tipo
 	WHERE TipoMonturaId = @TipoMontura;
