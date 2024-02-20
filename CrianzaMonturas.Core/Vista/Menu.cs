@@ -254,7 +254,7 @@ namespace CrianzaDragopavos
             PictureBox pbx = (PictureBox)this.Controls[nombrePbx]!;
             pbx.Tag = montura.TipoId;
 
-            if (clases == null || montura.TipoId != 0)
+            if (clases == null || montura.TipoId == 0)
             {
                 pbx.Image = null;
             }
