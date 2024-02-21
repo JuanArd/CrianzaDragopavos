@@ -1,4 +1,6 @@
-namespace CrianzaDragopavos
+using CrianzaMonturas.Core.Vista;
+
+namespace CrianzaMonturas
 {
     internal static class Program
     {

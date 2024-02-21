@@ -1,9 +1,8 @@
-using CrianzaDragopavos.Modelo;
-using CrianzaDragopavos.Controlador;
+using CrianzaMonturas.Core.Modelo;
+using CrianzaMonturas.Core.Controlador;
 using System.Data;
-using CrianzaDragopavos.Vista;
 
-namespace CrianzaDragopavos
+namespace CrianzaMonturas.Core.Vista
 {
     public partial class Menu : Form
     {

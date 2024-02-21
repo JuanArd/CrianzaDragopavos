@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CrianzaDragopavos.Modelo
+﻿namespace CrianzaMonturas.Core.Modelo
 {
-    internal class Cruce
+    public class Cruce
     {
         public int Tipo1 { get; set; }
         public int Tipo2 { get; set; }

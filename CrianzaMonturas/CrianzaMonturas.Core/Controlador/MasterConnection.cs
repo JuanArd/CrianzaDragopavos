@@ -2,7 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 
-namespace CrianzaDragopavos.Controlador
+namespace CrianzaMonturas.Core.Controlador
 {
     public static class MasterConnection
     {

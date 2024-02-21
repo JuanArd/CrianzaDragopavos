@@ -1,4 +1,4 @@
-﻿namespace CrianzaDragopavos
+﻿namespace CrianzaMonturas.Core.Vista
 {
     partial class Menu
     {

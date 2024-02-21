@@ -1,6 +1,6 @@
-﻿using CrianzaDragopavos.Modelo;
+﻿using CrianzaMonturas.Core.Modelo;
 
-namespace CrianzaDragopavos.Vista
+namespace CrianzaMonturas.Core.Vista
 {
     public partial class CrearCria : Form
     {

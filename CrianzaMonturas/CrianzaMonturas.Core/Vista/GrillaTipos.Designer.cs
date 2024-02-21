@@ -1,4 +1,4 @@
-﻿namespace CrianzaDragopavos.Vista
+﻿namespace CrianzaMonturas.Core.Vista
 {
     partial class GrillaTipos
     {

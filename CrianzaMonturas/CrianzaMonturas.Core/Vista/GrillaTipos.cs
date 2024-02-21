@@ -1,15 +1,7 @@
-﻿using CrianzaDragopavos.Modelo;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using CrianzaMonturas.Core.Modelo;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
-namespace CrianzaDragopavos.Vista
+namespace CrianzaMonturas.Core.Vista
 {
     public partial class GrillaTipos : Form
     {
