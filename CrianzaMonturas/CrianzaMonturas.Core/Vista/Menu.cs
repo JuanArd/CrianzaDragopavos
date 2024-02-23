@@ -25,7 +25,7 @@ namespace CrianzaMonturas.Core.Vista
 
         private void InicializarCombo()
         {
-            tiposMontura = CargarTiposMontura();
+            tiposMontura = TipoMonturaDao.CargarTipoMonturas();
 
             cmbTipoMontura.DataSource = tiposMontura;
             cmbTipoMontura.DisplayMember = "Nombre";
@@ -35,28 +35,6 @@ namespace CrianzaMonturas.Core.Vista
             tipoMontura = 1;
 
             CargarMonturas();
-        }
-
-        private static List<TipoMontura> CargarTiposMontura()
-        {
-            DataTable dt = new();
-            List<TipoMontura> tipoMonturas = new();
-
-            CrianzaMonturasDb.ObtenerTiposMontura(ref dt);
-
-            for (int r = 0; r < dt.Rows.Count; r++)
-            {
-                int id = Convert.ToInt32(dt.Rows[r][0].ToString());
-                string nombre = dt.Rows[r][1].ToString() ?? string.Empty;
-
-                tipoMonturas.Add(new TipoMontura
-                {
-                    Id = id,
-                    Nombre = nombre
-                });
-            }
-
-            return tipoMonturas;
         }
 
         private void CargarMonturas()
