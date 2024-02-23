@@ -1,5 +1,6 @@
-using CrianzaMonturas.Core.Modelo;
-using CrianzaMonturas.Core.Controlador;
+using CrianzaMonturas.Dal.Controlador;
+using CrianzaMonturas.Dal.Dao;
+using CrianzaMonturas.Dal.Modelo;
 using System.Data;
 
 namespace CrianzaMonturas.Core.Vista
@@ -41,7 +42,7 @@ namespace CrianzaMonturas.Core.Vista
             DataTable dt = new();
             List<TipoMontura> tipoMonturas = new();
 
-            CrianzaMonturas.ObtenerTiposMontura(ref dt);
+            CrianzaMonturasDb.ObtenerTiposMontura(ref dt);
 
             for (int r = 0; r < dt.Rows.Count; r++)
             {
@@ -61,8 +62,8 @@ namespace CrianzaMonturas.Core.Vista
         private void CargarMonturas()
         {
             DataTable dt = new();
-            
-            CrianzaMonturas.ObtenerMonturas(ref dt, tipoMontura);
+
+            CrianzaMonturasDb.ObtenerMonturas(ref dt, tipoMontura);
 
             monturasMacho.Clear();
             monturasMacho.Add(new Montura { Id = 0, Nombre = "", TipoId = 0, Padre = null, Madre = null });
@@ -99,7 +100,7 @@ namespace CrianzaMonturas.Core.Vista
             DataTable dt = new();
             List<Tipo> tipos = new();
 
-            CrianzaMonturas.ObtenerTipo(ref dt, tipoMontura);
+            CrianzaMonturasDb.ObtenerTipo(ref dt, tipoMontura);
 
             for (int r = 0; r < dt.Rows.Count; r++)
             {
@@ -127,25 +128,6 @@ namespace CrianzaMonturas.Core.Vista
             return tipos;
         }
 
-        private List<Cruce> CargarCruces()
-        {
-            DataTable dt = new();
-            List<Cruce> posiblesCruces = new();
-
-            CrianzaMonturas.ObtenerCruces(ref dt, tipoMontura);
-
-            for (int r = 0; r < dt.Rows.Count; r++)
-            {
-                posiblesCruces.Add(new Cruce
-                {
-                    Tipo1 = Convert.ToInt32(dt.Rows[r][2].ToString()),
-                    Tipo2 = Convert.ToInt32(dt.Rows[r][3].ToString()),
-                    TipoResultado = Convert.ToInt32(dt.Rows[r][4].ToString())
-                });
-            }
-
-            return posiblesCruces;
-        }
 
         #endregion Inicializadores
 
@@ -155,7 +137,7 @@ namespace CrianzaMonturas.Core.Vista
         {
             DataTable dt = new();
 
-            CrianzaMonturas.ObtenerMontura(ref dt, id);
+            CrianzaMonturasDb.ObtenerMontura(ref dt, id);
 
             Montura montura = new()
             {
@@ -253,7 +235,7 @@ namespace CrianzaMonturas.Core.Vista
             PictureBox pbx = (PictureBox)this.Controls[nombrePbx]!;
             pbx.Tag = montura.TipoId;
 
-            if (clases == null || montura.TipoId != 0)
+            if (clases == null || montura.TipoId == 0)
             {
                 pbx.Image = null;
             }
@@ -409,7 +391,7 @@ namespace CrianzaMonturas.Core.Vista
             Montura padre = (Montura)cmbPadre.SelectedItem;
             Montura madre = (Montura)cmbMadre.SelectedItem;
 
-            bool updated = CrianzaMonturas.CerrarReproduccion(padre.Id, madre.Id);
+            bool updated = CrianzaMonturasDb.CerrarReproduccion(padre.Id, madre.Id);
 
             if (updated)
             {
@@ -473,8 +455,14 @@ namespace CrianzaMonturas.Core.Vista
                 {
                     if (cantTiposPorcentaje[c] == porcentajeMayor)
                     {
-                        Tipo Tipo = clases.Find(x => x.Id == c) ?? clases.First();
-                        resultados.Add(new Resultado(Tipo, cantTiposPorcentaje[c]));
+                        Tipo tipo = clases.Find(x => x.Id == c) ?? clases.First();
+                        
+                        resultados.Add(new Resultado()
+                        {
+                            Tipo = tipo,
+                            Porcentaje = cantTiposPorcentaje[c]
+                        });
+
                         i++;
                     }
                 }
@@ -571,7 +559,7 @@ namespace CrianzaMonturas.Core.Vista
 
         private static void AparearMonturas(Montura pPadre, Montura pMadre)
         {
-            bool inserted = CrianzaMonturas.InsertarReproduccion(pPadre.Id, pMadre.Id);
+            bool inserted = CrianzaMonturasDb.InsertarReproduccion(pPadre.Id, pMadre.Id);
 
             if (inserted)
             {
@@ -605,12 +593,12 @@ namespace CrianzaMonturas.Core.Vista
 
             if (frmCria == DialogResult.OK)
             {
-                bool inserted = CrianzaMonturas.InsertarCria(frmCrear.Nombre, frmCrear.Sexo, tipoMontura, pCria.Id, frmCrear.Predispuesto,
+                bool inserted = CrianzaMonturasDb.InsertarCria(frmCrear.Nombre, frmCrear.Sexo, tipoMontura, pCria.Id, frmCrear.Predispuesto,
                     pPadre.Id, pMadre.Id, out int idCria);
 
                 if (inserted)
                 {
-                    bool updated = CrianzaMonturas.ActualizarReproduccion(idCria, pPadre.Id, pMadre.Id);
+                    bool updated = CrianzaMonturasDb.ActualizarReproduccion(idCria, pPadre.Id, pMadre.Id);
 
                     if (updated)
                     {
@@ -633,10 +621,12 @@ namespace CrianzaMonturas.Core.Vista
 
         private void CmbTipoMontura_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (cmbTipoMontura.SelectedItem == null) return;
+
             tipoMontura = ((TipoMontura)cmbTipoMontura.SelectedItem).Id;
             
             clases = CargarTipos();
-            cruces = CargarCruces();
+            cruces = CruceDao.ObtenerCruces(tipoMontura);
         }
 
         private void CmbPadre_SelectedIndexChanged(object sender, EventArgs e)

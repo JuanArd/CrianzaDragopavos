@@ -1,4 +1,4 @@
-﻿using CrianzaMonturas.Core.Modelo;
+﻿using CrianzaMonturas.Dal.Modelo;
 
 namespace CrianzaMonturas.Core.Vista
 {

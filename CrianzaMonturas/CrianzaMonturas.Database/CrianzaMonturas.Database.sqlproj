@@ -69,7 +69,6 @@
     <Build Include="SP\CerrarReproduccion.sql" />
     <Build Include="SP\InsertarCria.sql" />
     <Build Include="SP\InsertarReproduccion.sql" />
-    <Build Include="SP\ObtenerCruces.sql" />
     <Build Include="SP\ObtenerMontura.sql" />
     <Build Include="SP\ObtenerMonturas.sql" />
     <Build Include="SP\ObtenerTipo.sql" />

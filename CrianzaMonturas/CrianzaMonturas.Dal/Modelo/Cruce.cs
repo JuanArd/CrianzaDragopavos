@@ -1,6 +1,8 @@
-﻿namespace CrianzaMonturas.Core.Modelo
+﻿using CrianzaMonturas.Dal.Contratos;
+
+namespace CrianzaMonturas.Dal.Modelo
 {
-    public class Cruce
+    public class Cruce : ICruce
     {
         public int Tipo1 { get; set; }
         public int Tipo2 { get; set; }

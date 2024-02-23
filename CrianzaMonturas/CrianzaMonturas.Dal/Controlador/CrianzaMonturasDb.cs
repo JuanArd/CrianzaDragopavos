@@ -1,9 +1,9 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 
-namespace CrianzaMonturas.Core.Controlador
+namespace CrianzaMonturas.Dal.Controlador
 {
-    public static class CrianzaMonturas
+    public static class CrianzaMonturasDb
     {
         public static void ObtenerTiposMontura(ref DataTable dt)
         {
@@ -15,7 +15,7 @@ namespace CrianzaMonturas.Core.Controlador
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                //MessageBox.Show(ex.Message);
             }
             finally
             {
@@ -37,7 +37,7 @@ namespace CrianzaMonturas.Core.Controlador
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.StackTrace);
+                //MessageBox.Show(ex.StackTrace);
             }
             finally
             {
@@ -59,7 +59,7 @@ namespace CrianzaMonturas.Core.Controlador
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.StackTrace);
+                //MessageBox.Show(ex.StackTrace);
             }
             finally
             {
@@ -81,7 +81,7 @@ namespace CrianzaMonturas.Core.Controlador
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.StackTrace);
+                //MessageBox.Show(ex.StackTrace);
             }
             finally
             {
@@ -103,7 +103,7 @@ namespace CrianzaMonturas.Core.Controlador
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.StackTrace);
+                //MessageBox.Show(ex.StackTrace);
             }
             finally
             {
@@ -135,7 +135,7 @@ namespace CrianzaMonturas.Core.Controlador
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                //MessageBox.Show(ex.Message);
                 idCria = 0;
                 return false;
             }
@@ -164,7 +164,7 @@ namespace CrianzaMonturas.Core.Controlador
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                //MessageBox.Show(ex.Message);
                 return false;
             }
             finally
@@ -192,7 +192,7 @@ namespace CrianzaMonturas.Core.Controlador
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                //MessageBox.Show(ex.Message);
                 return false;
             }
             finally
@@ -219,7 +219,7 @@ namespace CrianzaMonturas.Core.Controlador
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                //MessageBox.Show(ex.Message);
                 return false;
             }
             finally
