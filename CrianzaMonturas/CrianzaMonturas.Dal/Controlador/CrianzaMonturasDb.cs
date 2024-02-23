@@ -67,50 +67,6 @@ namespace CrianzaMonturas.Dal.Controlador
             }
         }
 
-        public static void ObtenerTipo(ref DataTable dt, int tipoMontura)
-        {
-            try
-            {
-                MasterConnection.Open();
-                SqlDataAdapter da = new("ObtenerTipo", MasterConnection.connection);
-
-                da.SelectCommand.CommandType = CommandType.StoredProcedure;
-                da.SelectCommand.Parameters.AddWithValue("@TipoMontura", tipoMontura);
-
-                da.Fill(dt);
-            }
-            catch (Exception ex)
-            {
-                //MessageBox.Show(ex.StackTrace);
-            }
-            finally
-            {
-                MasterConnection.Close();
-            }
-        }
-
-        public static void ObtenerCruces(ref DataTable dt, int tipoMontura)
-        {
-            try
-            {
-                MasterConnection.Open();
-                SqlDataAdapter da = new("ObtenerCruces", MasterConnection.connection);
-
-                da.SelectCommand.CommandType = CommandType.StoredProcedure;
-                da.SelectCommand.Parameters.AddWithValue("@TipoMontura", tipoMontura);
-
-                da.Fill(dt);
-            }
-            catch (Exception ex)
-            {
-                //MessageBox.Show(ex.StackTrace);
-            }
-            finally
-            {
-                MasterConnection.Close();
-            }
-        }
-    
         public static bool InsertarCria(string nombre, string sexo, int tipoMontura, int cria, bool predispuesto, int padre, int madre, out int idCria)
         {
             try

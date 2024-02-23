@@ -95,40 +95,6 @@ namespace CrianzaMonturas.Core.Vista
             cmbMadre.SelectedIndex = 0;
         }
 
-        private List<Tipo> CargarTipos()
-        {
-            DataTable dt = new();
-            List<Tipo> tipos = new();
-
-            CrianzaMonturasDb.ObtenerTipo(ref dt, tipoMontura);
-
-            for (int r = 0; r < dt.Rows.Count; r++)
-            {
-                int id = Convert.ToInt32(dt.Rows[r][1].ToString());
-
-                string alias = dt.Rows[r][2].ToString() ?? string.Empty;
-                string nombre = dt.Rows[r][3].ToString() ?? string.Empty;
-                byte[] imagen = dt.Rows[r][4] != DBNull.Value ? (Byte[])dt.Rows[r][4] : Array.Empty<byte>();
-                string sigla = dt.Rows[r][5].ToString() ?? string.Empty;
-                int generacion = dt.Rows[r][6] != DBNull.Value ? Convert.ToInt32(dt.Rows[r][6].ToString()) : 0;
-
-                tipos.Add(new Tipo
-                {
-                    Id = id,
-                    Alias = alias,
-                    Nombre = nombre,
-                    Imagen = imagen,
-                    Sigla = sigla,
-                    Generacion = generacion
-                }
-                );
-
-            }
-
-            return tipos;
-        }
-
-
         #endregion Inicializadores
 
         #region Metodos
@@ -625,8 +591,15 @@ namespace CrianzaMonturas.Core.Vista
 
             tipoMontura = ((TipoMontura)cmbTipoMontura.SelectedItem).Id;
             
-            clases = CargarTipos();
-            cruces = CruceDao.ObtenerCruces(tipoMontura);
+            try
+            {
+                clases = TipoDao.CargarTipos(tipoMontura);
+                cruces = CruceDao.CargarCruces(tipoMontura);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void CmbPadre_SelectedIndexChanged(object sender, EventArgs e)
