@@ -18,11 +18,11 @@ namespace CrianzaMonturas.Dal.Dao
 
                 var query = "SELECT [Id], [Nombre] FROM [dbo].[TipoMontura];";
 
-                using (SqlCommand cmd = new(query, MasterConnection.connection))
+                using (var cmd = new SqlCommand(query, MasterConnection.connection))
                 {
                     cmd.CommandType = CommandType.Text;
 
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    using (var reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {

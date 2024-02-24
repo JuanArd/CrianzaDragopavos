@@ -27,7 +27,7 @@ namespace CrianzaMonturas.Dal.Dao
             return monturas;
         }
 
-        public Montura CargarMonturaPorId(int id)
+        private Montura CargarMonturaPorId(int id)
         {
             Montura montura = new();
             
@@ -145,5 +145,38 @@ namespace CrianzaMonturas.Dal.Dao
             return monturas;
         }
 
+        public int InsertarCria(IMontura cria)
+        {
+            int idCria = 0;
+
+            try
+            {
+                MasterConnection.Open();
+
+                using(var cmd = new SqlCommand("InsertarCria", MasterConnection.connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Nombre", cria.Nombre);
+                    cmd.Parameters.AddWithValue("@Sexo", cria.Sexo);
+                    cmd.Parameters.AddWithValue("@TipoMontura", cria.TipoMonturaId);
+                    cmd.Parameters.AddWithValue("@TipoCria", cria.TipoId);
+                    cmd.Parameters.AddWithValue("@Predispuesto", cria.Predispuesto);
+                    cmd.Parameters.AddWithValue("@Padre", cria.Padre!.Id);
+                    cmd.Parameters.AddWithValue("@Madre", cria.Madre!.Id);
+
+                    idCria = (int)cmd.ExecuteScalar();
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                MasterConnection.Close();
+            }
+
+            return idCria;
+        }
     }
 }

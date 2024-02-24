@@ -2,7 +2,6 @@ using CrianzaMonturas.Dal.Controlador;
 using CrianzaMonturas.Dal.Dao;
 using CrianzaMonturas.Dal.Modelo;
 using CrianzaMonturas.Dal.Contratos;
-using System.Data;
 
 namespace CrianzaMonturas.Core.Vista
 {
@@ -34,16 +33,23 @@ namespace CrianzaMonturas.Core.Vista
 
         private void InicializarCombo()
         {
-            tipoMonturas = tipoMonturaDao.CargarTipoMonturas();
+            try
+            {
+                tipoMonturas = tipoMonturaDao.CargarTipoMonturas();
 
-            cmbTipoMontura.DataSource = tipoMonturas;
-            cmbTipoMontura.DisplayMember = "Nombre";
-            cmbTipoMontura.ValueMember = "Id";
-            cmbTipoMontura.SelectedIndex = 0;
+                cmbTipoMontura.DataSource = tipoMonturas;
+                cmbTipoMontura.DisplayMember = "Nombre";
+                cmbTipoMontura.ValueMember = "Id";
+                cmbTipoMontura.SelectedIndex = 0;
 
-            tipoMontura = 1;
+                tipoMontura = 1;
 
-            CargarMonturasCombo();
+                CargarMonturasCombo();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void CargarMonturasCombo()
@@ -200,7 +206,7 @@ namespace CrianzaMonturas.Core.Vista
 
         private void CargarPuntosJerarquia(ref Dictionary<int, double> puntosPadre, ref Dictionary<int, double> puntosMadre)
         {
-            int puntos = 0;
+            int puntos;
 
             foreach (Control ctrl in this.Controls)
             {
@@ -306,6 +312,8 @@ namespace CrianzaMonturas.Core.Vista
 
         private void CerrarReproduccion()
         {
+            if (cmbPadre.SelectedItem == null || cmbMadre.SelectedItem == null) return;
+
             Montura padre = (Montura)cmbPadre.SelectedItem;
             Montura madre = (Montura)cmbMadre.SelectedItem;
 
@@ -320,6 +328,8 @@ namespace CrianzaMonturas.Core.Vista
 
         private void CalcularReproducciones()
         {
+            if (cmbPadre.SelectedItem == null || cmbMadre.SelectedItem == null) return;
+
             Montura madre = (Montura)cmbMadre.SelectedItem;
             Montura padre = (Montura)cmbPadre.SelectedItem;
 
@@ -475,9 +485,9 @@ namespace CrianzaMonturas.Core.Vista
             }
         }
 
-        private static void AparearMonturas(Montura pPadre, Montura pMadre)
+        private static void AparearMonturas(Montura padre, Montura madre)
         {
-            bool inserted = CrianzaMonturasDb.InsertarReproduccion(pPadre.Id, pMadre.Id);
+            bool inserted = CrianzaMonturasDb.InsertarReproduccion(padre.Id, madre.Id);
 
             if (inserted)
             {
@@ -496,7 +506,7 @@ namespace CrianzaMonturas.Core.Vista
             cmbPadre.DataSource = null;
             cmbMadre.DataSource = null;
 
-            CargarMonturas();
+            CargarMonturasCombo();
 
             lblReproduccionesMadre.Text = "";
             lblReproduccionesPadre.Text = "";
@@ -504,31 +514,48 @@ namespace CrianzaMonturas.Core.Vista
             pbxM.Image = null;
         }
 
-        private void GenerarCria(Tipo pCria, Montura pPadre, Montura pMadre)
+        private void GenerarCria(Tipo tipoCria, Montura padre, Montura madre)
         {
-            CrearCria frmCrear = new(pCria);
+            CrearCria frmCrear = new(tipoCria);
             DialogResult frmCria = frmCrear.ShowDialog();
 
             if (frmCria == DialogResult.OK)
             {
-                bool inserted = CrianzaMonturasDb.InsertarCria(frmCrear.Nombre, frmCrear.Sexo, tipoMontura, pCria.Id, frmCrear.Predispuesto,
-                    pPadre.Id, pMadre.Id, out int idCria);
-
-                if (inserted)
+                Montura cria = new Montura
                 {
-                    bool updated = CrianzaMonturasDb.ActualizarReproduccion(idCria, pPadre.Id, pMadre.Id);
+                    Id = 0,
+                    Nombre = frmCrear.Nombre,
+                    Sexo = frmCrear.Sexo,
+                    TipoId = tipoCria.Id,
+                    TipoMonturaId = tipoMontura,
+                    Padre = padre,
+                    Madre = madre
+                };
 
-                    if (updated)
+                try
+                {
+                    int idCria = monturaDao.InsertarCria(cria);
+
+                    if (idCria > 0)
                     {
-                        string mensaje = string.Format("Cria generada con Exito!{0}¿Desea cerrar la reproducción?", Environment.NewLine);
+                        bool updated = CrianzaMonturasDb.ActualizarReproduccion(idCria, padre.Id, madre.Id);
 
-                        DialogResult cerrarCria = MessageBox.Show(mensaje, "Generacion de cria", MessageBoxButtons.YesNo);
-
-                        if (cerrarCria == DialogResult.Yes)
+                        if (updated)
                         {
-                            CerrarReproduccion();
+                            string mensaje = string.Format("Cria generada con Exito!{0}¿Desea cerrar la reproducción?", Environment.NewLine);
+
+                            DialogResult cerrarCria = MessageBox.Show(mensaje, "Generacion de cria", MessageBoxButtons.YesNo);
+
+                            if (cerrarCria == DialogResult.Yes)
+                            {
+                                CerrarReproduccion();
+                            }
                         }
                     }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
                 }
             }
         }
@@ -556,6 +583,8 @@ namespace CrianzaMonturas.Core.Vista
 
         private void CmbPadre_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (cmbPadre.SelectedItem == null) return;
+
             LimpiarArbol("P");
             Montura padre = (Montura)cmbPadre.SelectedItem;
 
@@ -568,6 +597,8 @@ namespace CrianzaMonturas.Core.Vista
 
         private void CmbMadre_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (cmbMadre.SelectedItem == null) return;
+
             LimpiarArbol("M");
             Montura madre = (Montura)cmbMadre.SelectedItem;
 
@@ -588,7 +619,7 @@ namespace CrianzaMonturas.Core.Vista
             if (sender != null)
             {
                 PictureBox res = (PictureBox)sender;
-                GenerarCria((Tipo)res.Tag, (Montura)cmbPadre.SelectedItem, (Montura)cmbMadre.SelectedItem);
+                GenerarCria((Tipo)res.Tag!, (Montura)cmbPadre.SelectedItem!, (Montura)cmbMadre.SelectedItem!);
             }
         }
 
@@ -622,6 +653,8 @@ namespace CrianzaMonturas.Core.Vista
 
         private void BtnReproducir_Click(object sender, EventArgs e)
         {
+            if (cmbPadre.SelectedItem == null || cmbMadre.SelectedItem == null) return;
+
             Montura padre = (Montura)cmbPadre.SelectedItem;
             Montura madre = (Montura)cmbMadre.SelectedItem;
 

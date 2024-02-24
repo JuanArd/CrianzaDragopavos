@@ -18,12 +18,12 @@ namespace CrianzaMonturas.Dal.Dao
                 var query = "SELECT [TipoId_Masculino], [TipoId_Femenino], [TipoIdResultado] " +
                     "FROM [dbo].[CruceMontura] WHERE [TipoMonturaId] = @TipoMontura;";
 
-                using (SqlCommand cmd = new(query, MasterConnection.connection))
+                using (var cmd = new SqlCommand(query, MasterConnection.connection))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@TipoMontura", tipoMontura);
 
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    using (var reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
