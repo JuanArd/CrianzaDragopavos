@@ -11,15 +11,13 @@ namespace CrianzaMonturas.Dal.Modelo
         public int TipoMonturaId { get; set; }
         public int TipoId { get; set; }
         public bool Predispuesto { get; set; }
-        public Montura? Padre { get; set; }
-        public Montura? Madre { get; set; }
+        public IMontura? Padre { get; set; }
+        public IMontura? Madre { get; set; }
         public int Reproducciones { get; set; }
         public int MaxReproducciones { get; set; }
         public bool Esteril { get; set; }
         public bool Reproducible { get; set; }
         public bool Fecundada { get; set; }
-        IMontura? IMontura.Padre { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        IMontura? IMontura.Madre { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     }
 }

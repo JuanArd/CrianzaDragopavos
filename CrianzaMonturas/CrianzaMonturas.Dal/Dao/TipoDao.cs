@@ -5,9 +5,9 @@ using System.Data.SqlClient;
 
 namespace CrianzaMonturas.Dal.Dao
 {
-    public static class TipoDao
+    public class TipoDao
     {
-        public static List<Tipo> CargarTipos(int tipoMontura)
+        public List<Tipo> CargarTipos(int tipoMontura)
         {
             List<Tipo> tipos = new();
 

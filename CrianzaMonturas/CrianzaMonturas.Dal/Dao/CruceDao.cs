@@ -5,9 +5,9 @@ using System.Data.SqlClient;
 
 namespace CrianzaMonturas.Dal.Dao
 {
-    public static class CruceDao
+    public class CruceDao
     {
-        public static List<Cruce> CargarCruces(int tipoMontura)
+        public List<Cruce> CargarCruces(int tipoMontura)
         {
             List<Cruce> cruces = new();
 

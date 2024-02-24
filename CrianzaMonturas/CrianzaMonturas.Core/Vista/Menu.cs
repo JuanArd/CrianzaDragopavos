@@ -1,19 +1,28 @@
 using CrianzaMonturas.Dal.Controlador;
 using CrianzaMonturas.Dal.Dao;
 using CrianzaMonturas.Dal.Modelo;
+using CrianzaMonturas.Dal.Contratos;
 using System.Data;
 
 namespace CrianzaMonturas.Core.Vista
 {
     public partial class Menu : Form
     {
+        // Monturas
         int tipoMontura;
         readonly List<Montura> monturasHembra = new();
         readonly List<Montura> monturasMacho = new();
 
+        // Combo Boxes
         List<Cruce> cruces = new();
         List<Tipo> clases = new();
         List<TipoMontura> tipoMonturas = new();
+
+        // Dao
+        CruceDao cruceDao = new();
+        TipoDao tipoDao = new();
+        TipoMonturaDao tipoMonturaDao = new();
+        MonturaDao monturaDao = new();
 
         #region Inicializadores
 
@@ -25,7 +34,7 @@ namespace CrianzaMonturas.Core.Vista
 
         private void InicializarCombo()
         {
-            tipoMonturas = TipoMonturaDao.CargarTipoMonturas();
+            tipoMonturas = tipoMonturaDao.CargarTipoMonturas();
 
             cmbTipoMontura.DataSource = tipoMonturas;
             cmbTipoMontura.DisplayMember = "Nombre";
@@ -34,34 +43,23 @@ namespace CrianzaMonturas.Core.Vista
 
             tipoMontura = 1;
 
-            CargarMonturas();
+            CargarMonturasCombo();
         }
 
-        private void CargarMonturas()
+        private void CargarMonturasCombo()
         {
-            DataTable dt = new();
-
-            CrianzaMonturasDb.ObtenerMonturas(ref dt, tipoMontura);
-
             monturasMacho.Clear();
             monturasMacho.Add(new Montura { Id = 0, Nombre = "", TipoId = 0, Padre = null, Madre = null });
             monturasHembra.Clear();
             monturasHembra.Add(new Montura { Id = 0, Nombre = "", TipoId = 0, Padre = null, Madre = null });
 
-            for (int r = 0; r < dt.Rows.Count; r++)
-            {
-                Montura montura = CargarMontura(Convert.ToInt32(dt.Rows[r][0].ToString()));
+            // Cargando Monturas de la BD
+            var monturas = monturaDao.CargarMonturas(tipoMontura);
 
-                if (montura.Sexo == "M")
-                {
-                    monturasMacho.Add(montura);
-                }
-                else
-                {
-                    monturasHembra.Add(montura);
-                }
-            }
+            monturasMacho.AddRange(monturas.FindAll(m => m.Sexo == "M"));
+            monturasHembra.AddRange(monturas.FindAll(m => m.Sexo == "F"));
 
+            // Actualizando ComboBox
             cmbPadre.DataSource = monturasMacho;
             cmbPadre.DisplayMember = "Nombre";
             cmbPadre.ValueMember = "Id";
@@ -77,30 +75,6 @@ namespace CrianzaMonturas.Core.Vista
 
         #region Metodos
 
-        private Montura CargarMontura(int id)
-        {
-            DataTable dt = new();
-
-            CrianzaMonturasDb.ObtenerMontura(ref dt, id);
-
-            Montura montura = new()
-            {
-                Id = Convert.ToInt32(dt.Rows[0][0].ToString()),
-                Nombre = dt.Rows[0][1].ToString() ?? string.Empty,
-                Salvaje = Convert.ToBoolean(dt.Rows[0][2].ToString()),
-                Sexo = dt.Rows[0][3].ToString(),
-                TipoId = Convert.ToInt32(dt.Rows[0][5].ToString()),
-                Predispuesto = Convert.ToBoolean(dt.Rows[0][6].ToString()),
-                Padre = Convert.ToInt32(dt.Rows[0][7].ToString()) == 0 ? null : CargarMontura(Convert.ToInt32(dt.Rows[0][7].ToString())),
-                Madre = Convert.ToInt32(dt.Rows[0][8].ToString()) == 0 ? null : CargarMontura(Convert.ToInt32(dt.Rows[0][8].ToString())),
-                Reproducciones = Convert.ToInt32(dt.Rows[0][9].ToString()),
-                MaxReproducciones = Convert.ToInt32(dt.Rows[0][10].ToString()),
-                Esteril = Convert.ToBoolean(dt.Rows[0][11].ToString())
-            };
-
-            return montura;
-        }
-
         private int ObtenerCruce(int tipo1, int tipo2)
         {
             int resultado = 0;
@@ -109,11 +83,11 @@ namespace CrianzaMonturas.Core.Vista
             return cruce != null ? cruce.TipoResultado : resultado;
         }
 
-        private void CargarPadresMadres(Montura raiz, string prefix, int generacion)
+        private void CargarPadresMadres(IMontura raiz, string prefix, int generacion)
         {
             if (raiz.Id == 0 || raiz == null) return;
 
-            Montura currRaiz = raiz;
+            IMontura currRaiz = raiz;
 
             string pbxPrefix = prefix;
 
@@ -129,7 +103,7 @@ namespace CrianzaMonturas.Core.Vista
 
         }
 
-        private void CargarMadre(int generacion, Montura raiz, string pbxPrefix)
+        private void CargarMadre(int generacion, IMontura raiz, string pbxPrefix)
         {
             if (raiz.Madre != null && generacion > 1)
             {
@@ -143,7 +117,7 @@ namespace CrianzaMonturas.Core.Vista
             }
         }
 
-        private void CargarPadre(int generacion, Montura raiz, string pbxPrefix)
+        private void CargarPadre(int generacion, IMontura raiz, string pbxPrefix)
         {
             if (raiz.Padre != null && generacion > 1)
             {
@@ -157,7 +131,7 @@ namespace CrianzaMonturas.Core.Vista
             }
         }
 
-        private void CargarLabelReproducciones(string prefix, int generacion, Montura raiz)
+        private void CargarLabelReproducciones(string prefix, int generacion, IMontura raiz)
         {
             if (generacion == 3)
             {
@@ -172,7 +146,7 @@ namespace CrianzaMonturas.Core.Vista
             }
         }
 
-        private void CargarImagen(Montura montura, string sufixPbx)
+        private void CargarImagen(IMontura montura, string sufixPbx)
         {
 
             string nombrePbx = "pbx" + sufixPbx;
@@ -401,7 +375,7 @@ namespace CrianzaMonturas.Core.Vista
                     {
                         Tipo tipo = clases.Find(x => x.Id == c) ?? clases.First();
                         
-                        resultados.Add(new Resultado()
+                        resultados.Add(new Resultado
                         {
                             Tipo = tipo,
                             Porcentaje = cantTiposPorcentaje[c]
@@ -571,8 +545,8 @@ namespace CrianzaMonturas.Core.Vista
             
             try
             {
-                clases = TipoDao.CargarTipos(tipoMontura);
-                cruces = CruceDao.CargarCruces(tipoMontura);
+                clases = tipoDao.CargarTipos(tipoMontura);
+                cruces = cruceDao.CargarCruces(tipoMontura);
             }
             catch (Exception ex)
             {

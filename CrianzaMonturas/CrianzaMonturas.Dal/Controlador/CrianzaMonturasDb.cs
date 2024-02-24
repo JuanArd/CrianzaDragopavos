@@ -5,24 +5,6 @@ namespace CrianzaMonturas.Dal.Controlador
 {
     public static class CrianzaMonturasDb
     {
-        public static void ObtenerTiposMontura(ref DataTable dt)
-        {
-            try
-            {
-                MasterConnection.Open();
-                SqlDataAdapter da = new("SELECT * FROM TipoMontura", MasterConnection.connection);
-                da.Fill(dt);
-            }
-            catch (Exception ex)
-            {
-                //MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                MasterConnection.Close();
-            }
-        }
-
         public static void ObtenerMonturas(ref DataTable dt, int tipoMontura)
         {
             try
@@ -32,28 +14,6 @@ namespace CrianzaMonturas.Dal.Controlador
 
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.SelectCommand.Parameters.AddWithValue("@TipoMontura", tipoMontura);
-
-                da.Fill(dt);
-            }
-            catch (Exception ex)
-            {
-                //MessageBox.Show(ex.StackTrace);
-            }
-            finally
-            {
-                MasterConnection.Close();
-            }
-        }
-
-        public static void ObtenerMontura(ref DataTable dt, int idMontura)
-        {
-            try
-            {
-                MasterConnection.Open();
-                SqlDataAdapter da = new("ObtenerMontura", MasterConnection.connection);
-
-                da.SelectCommand.CommandType = CommandType.StoredProcedure;
-                da.SelectCommand.Parameters.AddWithValue("@Id", idMontura);
 
                 da.Fill(dt);
             }

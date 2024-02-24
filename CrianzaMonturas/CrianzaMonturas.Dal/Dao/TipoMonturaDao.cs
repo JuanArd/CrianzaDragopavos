@@ -6,9 +6,9 @@ using System.Text;
 
 namespace CrianzaMonturas.Dal.Dao
 {
-    public static class TipoMonturaDao
+    public class TipoMonturaDao
     {
-        public static List<TipoMontura> CargarTipoMonturas()
+        public List<TipoMontura> CargarTipoMonturas()
         {
             List<TipoMontura> tipoMonturas = new();
 
