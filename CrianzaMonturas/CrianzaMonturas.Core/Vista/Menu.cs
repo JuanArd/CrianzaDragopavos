@@ -1,4 +1,3 @@
-using CrianzaMonturas.Dal.Controlador;
 using CrianzaMonturas.Dal.Dao;
 using CrianzaMonturas.Dal.Modelo;
 using CrianzaMonturas.Dal.Contratos;
