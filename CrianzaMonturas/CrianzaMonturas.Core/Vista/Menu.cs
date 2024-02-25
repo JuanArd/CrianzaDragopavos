@@ -7,21 +7,20 @@ namespace CrianzaMonturas.Core.Vista
 {
     public partial class Menu : Form
     {
-        // Monturas
+        // Listas
         int tipoMontura;
         readonly List<Montura> monturasHembra = new();
         readonly List<Montura> monturasMacho = new();
-
-        // Combo Boxes
         List<Cruce> cruces = new();
         List<Tipo> clases = new();
         List<TipoMontura> tipoMonturas = new();
 
         // Dao
-        CruceDao cruceDao = new();
-        TipoDao tipoDao = new();
-        TipoMonturaDao tipoMonturaDao = new();
-        MonturaDao monturaDao = new();
+        readonly CruceDao cruceDao = new();
+        readonly TipoDao tipoDao = new();
+        readonly TipoMonturaDao tipoMonturaDao = new();
+        readonly MonturaDao monturaDao = new();
+        readonly ReproduccionDao reproduccionDao = new();
 
         #region Inicializadores
 
@@ -83,10 +82,9 @@ namespace CrianzaMonturas.Core.Vista
 
         private int ObtenerCruce(int tipo1, int tipo2)
         {
-            int resultado = 0;
             Cruce? cruce = cruces.Find(x => x.Tipo1 == tipo1 && x.Tipo2 == tipo2);
 
-            return cruce != null ? cruce.TipoResultado : resultado;
+            return cruce != null ? cruce.TipoResultado : 0;
         }
 
         private void CargarPadresMadres(IMontura raiz, string prefix, int generacion)
@@ -139,15 +137,17 @@ namespace CrianzaMonturas.Core.Vista
 
         private void CargarLabelReproducciones(string prefix, int generacion, IMontura raiz)
         {
+            var infoReproducciones = raiz.Reproducciones.ToString() + " / " + raiz.MaxReproducciones;
+
             if (generacion == 3)
             {
                 if (prefix == "P")
                 {
-                    lblReproduccionesPadre.Text = raiz.Reproducciones.ToString() + " / " + raiz.MaxReproducciones;
+                    lblReproduccionesPadre.Text = infoReproducciones;
                 }
                 else if (prefix == "M")
                 {
-                    lblReproduccionesMadre.Text = raiz.Reproducciones.ToString() + " / " + raiz.MaxReproducciones;
+                    lblReproduccionesMadre.Text = infoReproducciones;
                 }
             }
         }
@@ -317,9 +317,7 @@ namespace CrianzaMonturas.Core.Vista
             Montura padre = (Montura)cmbPadre.SelectedItem;
             Montura madre = (Montura)cmbMadre.SelectedItem;
 
-            bool updated = CrianzaMonturasDb.CerrarReproduccion(padre.Id, madre.Id);
-
-            if (updated)
+            if (reproduccionDao.CerrarReproduccion(padre.Id, madre.Id))
             {
                 MessageBox.Show("Se generaron crias con Exito!", "Generacion de crias");
                 LimpiarCalculadora();
@@ -333,10 +331,7 @@ namespace CrianzaMonturas.Core.Vista
             Montura madre = (Montura)cmbMadre.SelectedItem;
             Montura padre = (Montura)cmbPadre.SelectedItem;
 
-            if (madre.Id == 0 || padre.Id == 0)
-            {
-                return;
-            }
+            if (madre.Id == 0 || padre.Id == 0) return;
 
             //
             Dictionary<int, double> cantTiposPadre = new();
@@ -383,11 +378,9 @@ namespace CrianzaMonturas.Core.Vista
                 {
                     if (cantTiposPorcentaje[c] == porcentajeMayor)
                     {
-                        Tipo tipo = clases.Find(x => x.Id == c) ?? clases.First();
-                        
                         resultados.Add(new Resultado
                         {
-                            Tipo = tipo,
+                            Tipo = clases.Find(x => x.Id == c) ?? clases.First(),
                             Porcentaje = cantTiposPorcentaje[c]
                         });
 
@@ -423,7 +416,7 @@ namespace CrianzaMonturas.Core.Vista
             }
         }
 
-        private static void CalcularPorcentajeTotal(ref Dictionary<int, double> cantTiposTotal)
+        private void CalcularPorcentajeTotal(ref Dictionary<int, double> cantTiposTotal)
         {
             double totalTipos = 0;
 
@@ -465,7 +458,7 @@ namespace CrianzaMonturas.Core.Vista
             }
         }
 
-        private static void CalcularPorcentajePorPadre(ref Dictionary<int, double> cantTiposPadre, ref Dictionary<int, double> cantTiposMadre)
+        private void CalcularPorcentajePorPadre(ref Dictionary<int, double> cantTiposPadre, ref Dictionary<int, double> cantTiposMadre)
         {
             double totalTiposPadres = 0;
             double totalTiposMadres = 0;
@@ -485,11 +478,9 @@ namespace CrianzaMonturas.Core.Vista
             }
         }
 
-        private static void AparearMonturas(Montura padre, Montura madre)
+        private void AparearMonturas(Montura padre, Montura madre)
         {
-            bool inserted = CrianzaMonturasDb.InsertarReproduccion(padre.Id, madre.Id);
-
-            if (inserted)
+            if (reproduccionDao.InsertarReproduccion(padre.Id, madre.Id))
             {
                 MessageBox.Show("Monturas apareadas con Exito!", "Apareacion de Monturas");
             }
@@ -534,13 +525,11 @@ namespace CrianzaMonturas.Core.Vista
 
                 try
                 {
-                    int idCria = monturaDao.InsertarCria(cria);
+                    cria.Id = monturaDao.InsertarCria(cria);
 
-                    if (idCria > 0)
+                    if (cria.Id > 0)
                     {
-                        bool updated = CrianzaMonturasDb.ActualizarReproduccion(idCria, padre.Id, madre.Id);
-
-                        if (updated)
+                        if (reproduccionDao.ActualizarReproduccion(cria))
                         {
                             string mensaje = string.Format("Cria generada con Exito!{0}¿Desea cerrar la reproducción?", Environment.NewLine);
 
