@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{1df5d509-2322-4987-80f3-a0a2f051e2c8}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql150DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
@@ -69,9 +69,5 @@
     <Build Include="SP\CerrarReproduccion.sql" />
     <Build Include="SP\InsertarCria.sql" />
     <Build Include="SP\InsertarReproduccion.sql" />
-    <Build Include="SP\ObtenerCruces.sql" />
-    <Build Include="SP\ObtenerMontura.sql" />
-    <Build Include="SP\ObtenerMonturas.sql" />
-    <Build Include="SP\ObtenerTipo.sql" />
   </ItemGroup>
 </Project>
