@@ -4,6 +4,7 @@ using CrianzaMonturas.Dal.Modelo;
 using System.Data.SqlClient;
 using System.Data;
 using System.Text;
+using CrianzaMonturas.Dal.Utilidades;
 
 namespace CrianzaMonturas.Dal.Dao
 {
@@ -76,9 +77,9 @@ namespace CrianzaMonturas.Dal.Dao
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                Logger.WriteLog($"|{ex.Message} - {ex.StackTrace}|");
             }
             finally
             {
@@ -133,9 +134,9 @@ namespace CrianzaMonturas.Dal.Dao
                 }
                 
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                Logger.WriteLog($"|{ex.Message} - {ex.StackTrace}|");
             }
             finally
             {
@@ -167,9 +168,9 @@ namespace CrianzaMonturas.Dal.Dao
                     idCria = (int)cmd.ExecuteScalar();
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                Logger.WriteLog($"|{ex.Message} - {ex.StackTrace}|");
             }
             finally
             {

@@ -31,23 +31,16 @@ namespace CrianzaMonturas.Core.Vista
 
         private void InicializarCombo()
         {
-            try
-            {
-                tipoMonturas = tipoMonturaDao.CargarTipoMonturas();
+            tipoMonturas = tipoMonturaDao.CargarTipoMonturas();
 
-                cmbTipoMontura.DataSource = tipoMonturas;
-                cmbTipoMontura.DisplayMember = "Nombre";
-                cmbTipoMontura.ValueMember = "Id";
-                cmbTipoMontura.SelectedIndex = 0;
+            cmbTipoMontura.DataSource = tipoMonturas;
+            cmbTipoMontura.DisplayMember = "Nombre";
+            cmbTipoMontura.ValueMember = "Id";
+            cmbTipoMontura.SelectedIndex = 0;
 
-                tipoMontura = 1;
+            tipoMontura = 1;
 
-                CargarMonturasCombo();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            CargarMonturasCombo();
         }
 
         private void CargarMonturasCombo()
@@ -59,6 +52,11 @@ namespace CrianzaMonturas.Core.Vista
 
             // Cargando Monturas de la BD
             var monturas = monturaDao.CargarMonturas(tipoMontura);
+            if (monturas.Count <= 0)
+            {
+                MessageBox.Show("Ha ocurrido un error, por favor revise el log.");
+                return;
+            }
 
             monturasMacho.AddRange(monturas.FindAll(m => m.Sexo == "M"));
             monturasHembra.AddRange(monturas.FindAll(m => m.Sexo == "F"));
@@ -321,6 +319,10 @@ namespace CrianzaMonturas.Core.Vista
                 MessageBox.Show("Se generaron crias con Exito!", "Generacion de crias");
                 LimpiarCalculadora();
             }
+            else
+            {
+                MessageBox.Show("Ha ocurrido un error, por favor revise el log.");
+            }
         }
 
         private void CalcularReproducciones()
@@ -483,6 +485,10 @@ namespace CrianzaMonturas.Core.Vista
             {
                 MessageBox.Show("Monturas apareadas con Exito!", "Apareacion de Monturas");
             }
+            else
+            {
+                MessageBox.Show("Ha ocurrido un error, por favor revise el log.");
+            }
         }
 
         private void LimpiarCalculadora()
@@ -522,28 +528,29 @@ namespace CrianzaMonturas.Core.Vista
                     Madre = madre
                 };
 
-                try
+                cria.Id = monturaDao.InsertarCria(cria);
+
+                if (cria.Id > 0)
                 {
-                    cria.Id = monturaDao.InsertarCria(cria);
-
-                    if (cria.Id > 0)
+                    if (reproduccionDao.ActualizarReproduccion(cria))
                     {
-                        if (reproduccionDao.ActualizarReproduccion(cria))
+                        string mensaje = string.Format("Cria generada con Exito!{0}¿Desea cerrar la reproducción?", Environment.NewLine);
+
+                        DialogResult cerrarCria = MessageBox.Show(mensaje, "Generacion de cria", MessageBoxButtons.YesNo);
+
+                        if (cerrarCria == DialogResult.Yes)
                         {
-                            string mensaje = string.Format("Cria generada con Exito!{0}¿Desea cerrar la reproducción?", Environment.NewLine);
-
-                            DialogResult cerrarCria = MessageBox.Show(mensaje, "Generacion de cria", MessageBoxButtons.YesNo);
-
-                            if (cerrarCria == DialogResult.Yes)
-                            {
-                                CerrarReproduccion();
-                            }
+                            CerrarReproduccion();
                         }
                     }
+                    else
+                    {
+                        MessageBox.Show("Ha ocurrido un error, por favor revise el log.");
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show("Ha ocurrido un error, por favor revise el log.");
                 }
             }
         }
@@ -563,9 +570,9 @@ namespace CrianzaMonturas.Core.Vista
                 clases = tipoDao.CargarTipos(tipoMontura);
                 cruces = cruceDao.CargarCruces(tipoMontura);
             }
-            catch (Exception ex)
+            catch
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Ha ocurrido un error, por favor revise el log.");
             }
         }
 

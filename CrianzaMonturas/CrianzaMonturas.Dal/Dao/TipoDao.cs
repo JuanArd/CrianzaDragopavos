@@ -2,6 +2,7 @@
 using System.Data;
 using CrianzaMonturas.Dal.Controlador;
 using System.Data.SqlClient;
+using CrianzaMonturas.Dal.Utilidades;
 
 namespace CrianzaMonturas.Dal.Dao
 {
@@ -42,9 +43,9 @@ namespace CrianzaMonturas.Dal.Dao
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                Logger.WriteLog($"|{ex.Message} - {ex.StackTrace}|");
             }
             finally
             {

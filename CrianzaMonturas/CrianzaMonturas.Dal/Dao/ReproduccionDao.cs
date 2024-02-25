@@ -2,6 +2,7 @@
 using CrianzaMonturas.Dal.Controlador;
 using System.Data.SqlClient;
 using System.Data;
+using CrianzaMonturas.Dal.Utilidades;
 
 namespace CrianzaMonturas.Dal.Dao
 {
@@ -27,9 +28,9 @@ namespace CrianzaMonturas.Dal.Dao
 
                 result = true;
             }
-            catch
+            catch (Exception ex)
             {
-
+                Logger.WriteLog($"|{ex.Message} - {ex.StackTrace}|");
             }
             finally
             {
@@ -58,9 +59,9 @@ namespace CrianzaMonturas.Dal.Dao
 
                 result = true;
             }
-            catch
+            catch (Exception ex)
             {
-
+                Logger.WriteLog($"|{ex.Message} - {ex.StackTrace}|");
             }
             finally
             {
@@ -89,9 +90,9 @@ namespace CrianzaMonturas.Dal.Dao
 
                 result = true;
             }
-            catch
+            catch (Exception ex)
             {
-
+                Logger.WriteLog($"|{ex.Message} - {ex.StackTrace}|");
             }
             finally
             {
