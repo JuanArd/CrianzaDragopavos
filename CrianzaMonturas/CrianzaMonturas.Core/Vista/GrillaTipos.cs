@@ -114,6 +114,7 @@ namespace CrianzaMonturas.Core.Vista
                 {
                     dgvTipos.ClearSelection();
                     dgvTipos.Rows[row + 1].Selected = true;
+                    dgvTipos.Focus();
                 }
             }
 
@@ -127,6 +128,8 @@ namespace CrianzaMonturas.Core.Vista
                 {
                     dgvTipos.ClearSelection();
                     dgvTipos.Rows[row - 1].Selected = true;
+                    dgvTipos.Focus();
+
                 }
             }
         }
