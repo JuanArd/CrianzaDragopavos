@@ -18,6 +18,7 @@ namespace CrianzaMonturas.Dal.Modelo
         public bool Esteril { get; set; }
         public bool Reproducible { get; set; }
         public bool Fecundada { get; set; }
+        public int CantPureza {  get; set; }
 
     }
 }

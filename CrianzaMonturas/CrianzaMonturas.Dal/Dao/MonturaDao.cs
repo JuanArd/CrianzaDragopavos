@@ -37,7 +37,7 @@ namespace CrianzaMonturas.Dal.Dao
                 MasterConnection.Open();
 
                 var query = "SELECT [Id], [Nombre], [Salvaje], [Sexo], [TipoId], [Predispuesto], " +
-                    "[Padre], [Madre], [Reproducciones], [MaxReproducciones], [Esteril] " +
+                    "[Padre], [Madre], [Reproducciones], [MaxReproducciones], [Esteril], [CantPureza] " +
 		            "FROM [dbo].[Montura] WHERE Id = @Id;";
 
                 using (var cmd = new SqlCommand(query, MasterConnection.connection))
@@ -59,8 +59,9 @@ namespace CrianzaMonturas.Dal.Dao
                                 TipoId = reader.GetInt32("TipoId"),
                                 Predispuesto = reader.GetBoolean("Predispuesto"),
                                 Reproducciones = Convert.ToInt32(reader.GetByte("Reproducciones")),
-                                MaxReproducciones = Convert.ToInt32(reader.GetByte("Reproducciones")),
-                                Esteril = reader.GetBoolean("Esteril")
+                                MaxReproducciones = Convert.ToInt32(reader.GetByte("MaxReproducciones")),
+                                Esteril = reader.GetBoolean("Esteril"),
+                                CantPureza = reader.GetValue("CantPureza") != DBNull.Value ? reader.GetInt32("CantPureza") : 0
                             };
 
                             padres.Add("P", reader.GetInt32("Padre"));
@@ -98,7 +99,7 @@ namespace CrianzaMonturas.Dal.Dao
                 MasterConnection.Open();
 
                 var query = "SELECT [Id], [Nombre], [Salvaje], [Sexo], [TipoId], [Predispuesto], " +
-                    "[Padre], [Madre], [Reproducciones], [MaxReproducciones], [Esteril] " +
+                    "[Padre], [Madre], [Reproducciones], [MaxReproducciones], [Esteril], [CantPureza] " +
                     "FROM [dbo].[Montura] WHERE TipoMonturaId = @TipoMontura " +
                     "AND (Esteril = 0 AND Reproducible = 1) OR (Esteril = 1 AND Fecundada = 1)" +
                     "ORDER BY TipoId, Nombre;";
@@ -122,8 +123,9 @@ namespace CrianzaMonturas.Dal.Dao
                                 TipoId = reader.GetInt32("TipoId"),
                                 Predispuesto = reader.GetBoolean("Predispuesto"),
                                 Reproducciones = Convert.ToInt32(reader.GetByte("Reproducciones")),
-                                MaxReproducciones = Convert.ToInt32(reader.GetByte("Reproducciones")),
-                                Esteril = reader.GetBoolean("Esteril")
+                                MaxReproducciones = Convert.ToInt32(reader.GetByte("MaxReproducciones")),
+                                Esteril = reader.GetBoolean("Esteril"),
+                                CantPureza = reader.GetValue("CantPureza") != DBNull.Value ? reader.GetInt32("CantPureza") : 0
                             };
 
                             padres.Add(montura, new List<int> { reader.GetInt32("Padre"), reader.GetInt32("Madre") });
@@ -164,6 +166,7 @@ namespace CrianzaMonturas.Dal.Dao
                     cmd.Parameters.AddWithValue("@Predispuesto", cria.Predispuesto);
                     cmd.Parameters.AddWithValue("@Padre", cria.Padre!.Id);
                     cmd.Parameters.AddWithValue("@Madre", cria.Madre!.Id);
+                    cmd.Parameters.AddWithValue("@CantPureza", cria.CantPureza);
 
                     idCria = (int)cmd.ExecuteScalar();
                 }

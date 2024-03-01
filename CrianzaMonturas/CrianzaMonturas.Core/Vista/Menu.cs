@@ -528,6 +528,7 @@ namespace CrianzaMonturas.Core.Vista
                     Madre = madre
                 };
 
+                cria.CantPureza = CalcularPureza(cria.TipoId, cria.Padre, cria.Madre, 1);
                 cria.Id = monturaDao.InsertarCria(cria);
 
                 if (cria.Id > 0)
@@ -553,6 +554,30 @@ namespace CrianzaMonturas.Core.Vista
                     MessageBox.Show("Ha ocurrido un error, por favor revise el log.");
                 }
             }
+        }
+
+        private int CalcularPureza(int tipoCria, IMontura? padre, IMontura? madre, int lvl)
+        {
+            var pureza = 0;
+            var base_pureza = lvl switch
+            {
+                1 => 6,
+                2 => 3,
+                3 => 1,
+                _ => 0,
+            };
+
+            if (padre is not null && padre.TipoId == tipoCria) pureza += base_pureza;
+            if (madre is not null && madre.TipoId == tipoCria) pureza += base_pureza;
+
+            if (lvl <= 2)
+            {
+                var newLvl = lvl + 1;
+                if (padre is not null) pureza += CalcularPureza(tipoCria, padre.Padre, padre.Madre, newLvl);
+                if (madre is not null) pureza += CalcularPureza(tipoCria, madre.Padre, madre.Madre, newLvl);
+            }
+
+            return pureza;
         }
 
         #endregion Metodos
