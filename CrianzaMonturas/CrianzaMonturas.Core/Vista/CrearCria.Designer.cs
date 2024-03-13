@@ -36,6 +36,9 @@
             txtNombre = new TextBox();
             lblNombre = new Label();
             lblSexo = new Label();
+            lblPureza = new Label();
+            txtPureza = new TextBox();
+            chkModificar = new CheckBox();
             SuspendLayout();
             // 
             // lblTipo
@@ -59,7 +62,7 @@
             // 
             // btnCrear
             // 
-            btnCrear.Location = new Point(101, 102);
+            btnCrear.Location = new Point(101, 126);
             btnCrear.Name = "btnCrear";
             btnCrear.Size = new Size(75, 23);
             btnCrear.TabIndex = 3;
@@ -111,11 +114,44 @@
             lblSexo.TabIndex = 6;
             lblSexo.Text = "Sexo:";
             // 
+            // lblPureza
+            // 
+            lblPureza.AutoSize = true;
+            lblPureza.Location = new Point(12, 96);
+            lblPureza.Name = "lblPureza";
+            lblPureza.Size = new Size(45, 15);
+            lblPureza.TabIndex = 7;
+            lblPureza.Text = "Pureza:";
+            // 
+            // txtPureza
+            // 
+            txtPureza.Location = new Point(73, 93);
+            txtPureza.Name = "txtPureza";
+            txtPureza.ReadOnly = true;
+            txtPureza.ScrollBars = ScrollBars.Vertical;
+            txtPureza.Size = new Size(62, 23);
+            txtPureza.TabIndex = 8;
+            txtPureza.KeyPress += TxtPureza_KeyPress;
+            // 
+            // chkModificar
+            // 
+            chkModificar.AutoSize = true;
+            chkModificar.Location = new Point(155, 95);
+            chkModificar.Name = "chkModificar";
+            chkModificar.Size = new Size(77, 19);
+            chkModificar.TabIndex = 9;
+            chkModificar.Text = "Modificar";
+            chkModificar.UseVisualStyleBackColor = true;
+            chkModificar.CheckedChanged += ChkModificar_CheckedChanged;
+            // 
             // CrearCria
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(281, 134);
+            ClientSize = new Size(281, 161);
+            Controls.Add(chkModificar);
+            Controls.Add(txtPureza);
+            Controls.Add(lblPureza);
             Controls.Add(lblSexo);
             Controls.Add(txtNombre);
             Controls.Add(lblNombre);
@@ -142,5 +178,8 @@
         private TextBox txtNombre;
         private Label lblNombre;
         private Label lblSexo;
+        private Label lblPureza;
+        private TextBox txtPureza;
+        private CheckBox chkModificar;
     }
 }
