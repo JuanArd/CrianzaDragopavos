@@ -1,9 +1,9 @@
 ﻿using CrianzaMonturas.Dal.Controlador;
 using CrianzaMonturas.Dal.Modelo;
-using System.Data.SqlClient;
-using System.Data;
-using System.Text;
 using CrianzaMonturas.Dal.Utilidades;
+using System.Data;
+using System.Data.SqlClient;
+using System.Text;
 
 namespace CrianzaMonturas.Dal.Dao
 {

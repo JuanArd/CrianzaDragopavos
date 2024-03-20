@@ -56,7 +56,7 @@
             chkPredispuesto.Location = new Point(155, 68);
             chkPredispuesto.Name = "chkPredispuesto";
             chkPredispuesto.Size = new Size(94, 19);
-            chkPredispuesto.TabIndex = 2;
+            chkPredispuesto.TabIndex = 3;
             chkPredispuesto.Text = "Predispuesto";
             chkPredispuesto.UseVisualStyleBackColor = true;
             // 
@@ -65,7 +65,7 @@
             btnCrear.Location = new Point(101, 126);
             btnCrear.Name = "btnCrear";
             btnCrear.Size = new Size(75, 23);
-            btnCrear.TabIndex = 3;
+            btnCrear.TabIndex = 6;
             btnCrear.Text = "Crear";
             btnCrear.UseVisualStyleBackColor = true;
             btnCrear.Click += BtnCrear_Click;
@@ -78,7 +78,7 @@
             cmbSexo.Location = new Point(73, 64);
             cmbSexo.Name = "cmbSexo";
             cmbSexo.Size = new Size(62, 23);
-            cmbSexo.TabIndex = 1;
+            cmbSexo.TabIndex = 2;
             // 
             // txtTipo
             // 
@@ -86,14 +86,14 @@
             txtTipo.Location = new Point(73, 6);
             txtTipo.Name = "txtTipo";
             txtTipo.Size = new Size(176, 23);
-            txtTipo.TabIndex = 4;
+            txtTipo.TabIndex = 0;
             // 
             // txtNombre
             // 
             txtNombre.Location = new Point(73, 35);
             txtNombre.Name = "txtNombre";
             txtNombre.Size = new Size(176, 23);
-            txtNombre.TabIndex = 0;
+            txtNombre.TabIndex = 1;
             txtNombre.Leave += TxtNombre_Leave;
             // 
             // lblNombre
@@ -130,7 +130,7 @@
             txtPureza.ReadOnly = true;
             txtPureza.ScrollBars = ScrollBars.Vertical;
             txtPureza.Size = new Size(62, 23);
-            txtPureza.TabIndex = 8;
+            txtPureza.TabIndex = 5;
             txtPureza.KeyPress += TxtPureza_KeyPress;
             // 
             // chkModificar
@@ -139,7 +139,7 @@
             chkModificar.Location = new Point(155, 95);
             chkModificar.Name = "chkModificar";
             chkModificar.Size = new Size(77, 19);
-            chkModificar.TabIndex = 9;
+            chkModificar.TabIndex = 4;
             chkModificar.Text = "Modificar";
             chkModificar.UseVisualStyleBackColor = true;
             chkModificar.CheckedChanged += ChkModificar_CheckedChanged;

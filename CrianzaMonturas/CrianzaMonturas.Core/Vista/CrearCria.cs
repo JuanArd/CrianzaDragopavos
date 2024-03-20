@@ -1,4 +1,5 @@
 ﻿using CrianzaMonturas.Dal.Contratos;
+using CrianzaMonturas.Dal.Dao;
 using CrianzaMonturas.Dal.Modelo;
 
 namespace CrianzaMonturas.Core.Vista
@@ -38,23 +39,34 @@ namespace CrianzaMonturas.Core.Vista
 
         #endregion Properties
 
+        readonly MonturaDao monturaDao = new();
+
         public CrearCria(Tipo tipo, Montura padre, Montura madre)
         {
             InitializeComponent();
 
-            nombre = tipo.Nombre;
+            pureza = CalcularPureza(tipo.Id, padre, madre, 1);
+
+            nombre = monturaDao.ObtenerUltimoNombre(tipo);
+            var idxGuionExtra = nombre.IndexOf('-', 6);
+            nombre = idxGuionExtra == -1 ? nombre : nombre[..idxGuionExtra];
+
+            var idMontura = Convert.ToInt32(nombre.Substring(nombre.IndexOf('-') + 1));
+            nombre = nombre.Replace(idMontura.ToString(), (idMontura + 1).ToString());
+            nombre = pureza == 32 ? nombre + "-PUR" : nombre;
+
             sexo = string.Empty;
 
-            txtTipo.Text = nombre;
-            txtNombre.Text = tipo.Sigla;
-            txtPureza.Text = CalcularPureza(tipo.Id, padre, madre, 1).ToString();
+            txtTipo.Text = tipo.Nombre;
+            txtNombre.Text = nombre;
+            txtPureza.Text = pureza.ToString();
         }
 
         #region Events
 
         private void BtnCrear_Click(object sender, EventArgs e)
         {
-            string message = string.Format("Desea crear la cria [{0}] como resultado de la reproduccion?", txtTipo.Text);
+            string message = string.Format("Desea crear la cria [{0}] como resultado de la reproduccion?", txtNombre.Text);
 
             DialogResult msg = MessageBox.Show(message, "Generar Cria", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
@@ -82,7 +94,7 @@ namespace CrianzaMonturas.Core.Vista
 
         private void ChkModificar_CheckedChanged(object sender, EventArgs e)
         {
-            txtPureza.ReadOnly = chkModificar.Checked;
+            txtPureza.ReadOnly = !chkModificar.Checked;
         }
 
         private void TxtPureza_KeyPress(object sender, KeyPressEventArgs e)
@@ -123,6 +135,6 @@ namespace CrianzaMonturas.Core.Vista
 
         #endregion Methods
 
-        
+
     }
 }

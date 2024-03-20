@@ -1,6 +1,6 @@
+using CrianzaMonturas.Dal.Contratos;
 using CrianzaMonturas.Dal.Dao;
 using CrianzaMonturas.Dal.Modelo;
-using CrianzaMonturas.Dal.Contratos;
 
 namespace CrianzaMonturas.Core.Vista
 {
@@ -301,7 +301,7 @@ namespace CrianzaMonturas.Core.Vista
                     consecutivo++;
                 }
             }
-            catch 
+            catch
             {
                 MessageBox.Show("No fue posible mostrar los resultados");
             }
@@ -566,7 +566,7 @@ namespace CrianzaMonturas.Core.Vista
             if (cmbTipoMontura.SelectedItem == null) return;
 
             tipoMontura = ((TipoMontura)cmbTipoMontura.SelectedItem).Id;
-            
+
             try
             {
                 clases = tipoDao.CargarTipos(tipoMontura);
@@ -672,6 +672,6 @@ namespace CrianzaMonturas.Core.Vista
         }
 
         #endregion Eventos      
-        
+
     }
 }

@@ -1,8 +1,8 @@
 ﻿using CrianzaMonturas.Dal.Contratos;
 using CrianzaMonturas.Dal.Controlador;
-using System.Data.SqlClient;
-using System.Data;
 using CrianzaMonturas.Dal.Utilidades;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace CrianzaMonturas.Dal.Dao
 {
@@ -16,7 +16,7 @@ namespace CrianzaMonturas.Dal.Dao
             {
                 MasterConnection.Open();
 
-                using(var cmd = new SqlCommand("ActualizarReproduccion", MasterConnection.connection))
+                using (var cmd = new SqlCommand("ActualizarReproduccion", MasterConnection.connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@Cria", cria.Id);
