@@ -1,6 +1,6 @@
+using CrianzaMonturas.Dal.Contratos;
 using CrianzaMonturas.Dal.Dao;
 using CrianzaMonturas.Dal.Modelo;
-using CrianzaMonturas.Dal.Contratos;
 
 namespace CrianzaMonturas.Core.Vista
 {
@@ -301,7 +301,7 @@ namespace CrianzaMonturas.Core.Vista
                     consecutivo++;
                 }
             }
-            catch 
+            catch
             {
                 MessageBox.Show("No fue posible mostrar los resultados");
             }
@@ -512,12 +512,12 @@ namespace CrianzaMonturas.Core.Vista
 
         private void GenerarCria(Tipo tipoCria, Montura padre, Montura madre)
         {
-            CrearCria frmCrear = new(tipoCria);
+            CrearCria frmCrear = new(tipoCria, padre, madre);
             DialogResult frmCria = frmCrear.ShowDialog();
 
             if (frmCria == DialogResult.OK)
             {
-                Montura cria = new Montura
+                Montura cria = new()
                 {
                     Id = 0,
                     Nombre = frmCrear.Nombre,
@@ -525,10 +525,11 @@ namespace CrianzaMonturas.Core.Vista
                     TipoId = tipoCria.Id,
                     TipoMonturaId = tipoMontura,
                     Padre = padre,
-                    Madre = madre
+                    Madre = madre,
+                    CantPureza = frmCrear.Pureza,
+                    Predispuesto = frmCrear.Predispuesto,
                 };
 
-                cria.CantPureza = CalcularPureza(cria.TipoId, cria.Padre, cria.Madre, 1);
                 cria.Id = monturaDao.InsertarCria(cria);
 
                 if (cria.Id > 0)
@@ -556,30 +557,6 @@ namespace CrianzaMonturas.Core.Vista
             }
         }
 
-        private int CalcularPureza(int tipoCria, IMontura? padre, IMontura? madre, int lvl)
-        {
-            var pureza = 0;
-            var base_pureza = lvl switch
-            {
-                1 => 6,
-                2 => 3,
-                3 => 1,
-                _ => 0,
-            };
-
-            if (padre is not null && padre.TipoId == tipoCria) pureza += base_pureza;
-            if (madre is not null && madre.TipoId == tipoCria) pureza += base_pureza;
-
-            if (lvl <= 2)
-            {
-                var newLvl = lvl + 1;
-                if (padre is not null) pureza += CalcularPureza(tipoCria, padre.Padre, padre.Madre, newLvl);
-                if (madre is not null) pureza += CalcularPureza(tipoCria, madre.Padre, madre.Madre, newLvl);
-            }
-
-            return pureza;
-        }
-
         #endregion Metodos
 
         #region Eventos
@@ -589,7 +566,7 @@ namespace CrianzaMonturas.Core.Vista
             if (cmbTipoMontura.SelectedItem == null) return;
 
             tipoMontura = ((TipoMontura)cmbTipoMontura.SelectedItem).Id;
-            
+
             try
             {
                 clases = tipoDao.CargarTipos(tipoMontura);
@@ -695,6 +672,6 @@ namespace CrianzaMonturas.Core.Vista
         }
 
         #endregion Eventos      
-        
+
     }
 }

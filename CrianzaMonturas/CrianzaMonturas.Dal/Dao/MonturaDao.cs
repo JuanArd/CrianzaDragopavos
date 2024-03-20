@@ -1,10 +1,10 @@
 ﻿using CrianzaMonturas.Dal.Contratos;
 using CrianzaMonturas.Dal.Controlador;
 using CrianzaMonturas.Dal.Modelo;
-using System.Data.SqlClient;
-using System.Data;
-using System.Text;
 using CrianzaMonturas.Dal.Utilidades;
+using System.Data;
+using System.Data.SqlClient;
+using System.Text;
 
 namespace CrianzaMonturas.Dal.Dao
 {
@@ -15,7 +15,7 @@ namespace CrianzaMonturas.Dal.Dao
         {
             List<Montura> monturas = new();
 
-            foreach(var kvp in padres)
+            foreach (var kvp in padres)
             {
                 Montura monturaActual = (Montura)kvp.Key;
 
@@ -31,14 +31,14 @@ namespace CrianzaMonturas.Dal.Dao
         private Montura CargarMonturaPorId(int id)
         {
             Montura montura = new();
-            
+
             try
             {
                 MasterConnection.Open();
 
                 var query = "SELECT [Id], [Nombre], [Salvaje], [Sexo], [TipoId], [Predispuesto], " +
                     "[Padre], [Madre], [Reproducciones], [MaxReproducciones], [Esteril], [CantPureza] " +
-		            "FROM [dbo].[Montura] WHERE Id = @Id;";
+                    "FROM [dbo].[Montura] WHERE Id = @Id;";
 
                 using (var cmd = new SqlCommand(query, MasterConnection.connection))
                 {
@@ -134,7 +134,7 @@ namespace CrianzaMonturas.Dal.Dao
 
                     monturas = CargarPadres(padres);
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -156,7 +156,7 @@ namespace CrianzaMonturas.Dal.Dao
             {
                 MasterConnection.Open();
 
-                using(var cmd = new SqlCommand("InsertarCria", MasterConnection.connection))
+                using (var cmd = new SqlCommand("InsertarCria", MasterConnection.connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@Nombre", cria.Nombre);
@@ -181,6 +181,44 @@ namespace CrianzaMonturas.Dal.Dao
             }
 
             return idCria;
+        }
+
+        public string ObtenerUltimoNombre(ITipo tipo)
+        {
+            string nombre = tipo.Alias;
+
+            try
+            {
+                MasterConnection.Open();
+
+                var query = "SELECT [Nombre] FROM [dbo].[Montura] WHERE TipoId = @Tipo " +
+                    "ORDER BY [Id] DESC;";
+
+                using (var cmd = new SqlCommand(query, MasterConnection.connection))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@Tipo", tipo.Id);
+                    var padres = new Dictionary<string, int>();
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            nombre = reader.GetString("Nombre");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog($"|{ex.Message} - {ex.StackTrace}|");
+            }
+            finally
+            {
+                MasterConnection.Close();
+            }
+
+            return nombre;
         }
     }
 }
