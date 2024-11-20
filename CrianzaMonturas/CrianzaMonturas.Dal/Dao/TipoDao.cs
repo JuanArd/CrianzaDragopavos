@@ -10,7 +10,7 @@ namespace CrianzaMonturas.Dal.Dao
     {
         public List<Tipo> CargarTipos(int tipoMontura)
         {
-            List<Tipo> tipos = new();
+            List<Tipo> tipos = [];
 
             try
             {
@@ -19,7 +19,7 @@ namespace CrianzaMonturas.Dal.Dao
                 var query = "SELECT [Id], [Alias], [Nombre], [Imagen], [Sigla], [Generacion] " +
                     "FROM [dbo].[Tipo] WHERE [TipoMonturaId] = @TipoMontura;";
 
-                using (var cmd = new SqlCommand(query, MasterConnection.connection))
+                using (var cmd = new SqlCommand(query, MasterConnection.Connection))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@TipoMontura", tipoMontura);
@@ -33,7 +33,7 @@ namespace CrianzaMonturas.Dal.Dao
                                 Id = reader.GetInt32("Id"),
                                 Alias = reader.GetValue("Alias") != DBNull.Value ? reader.GetString("Alias") : string.Empty,
                                 Nombre = reader.GetValue("Nombre") != DBNull.Value ? reader.GetString("Nombre") : string.Empty,
-                                Imagen = reader.GetValue("Imagen") != DBNull.Value ? (Byte[])reader.GetValue("Imagen") : Array.Empty<byte>(),
+                                Imagen = reader.GetValue("Imagen") != DBNull.Value ? (Byte[])reader.GetValue("Imagen") : [],
                                 Sigla = reader.GetValue("Sigla") != DBNull.Value ? reader.GetString("Sigla") : string.Empty,
                                 Generacion = reader.GetValue("Generacion") != DBNull.Value ? reader.GetInt32("Generacion") : 0
                             };

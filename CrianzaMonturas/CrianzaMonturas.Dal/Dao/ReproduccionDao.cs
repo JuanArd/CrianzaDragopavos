@@ -16,7 +16,7 @@ namespace CrianzaMonturas.Dal.Dao
             {
                 MasterConnection.Open();
 
-                using (var cmd = new SqlCommand("ActualizarReproduccion", MasterConnection.connection))
+                using(var cmd = new SqlCommand("ActualizarReproduccion", MasterConnection.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@Cria", cria.Id);
@@ -48,7 +48,7 @@ namespace CrianzaMonturas.Dal.Dao
             {
                 MasterConnection.Open();
 
-                using (var cmd = new SqlCommand("CerrarReproduccion", MasterConnection.connection))
+                using (var cmd = new SqlCommand("CerrarReproduccion", MasterConnection.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@Padre", padreId);
@@ -79,7 +79,7 @@ namespace CrianzaMonturas.Dal.Dao
             {
                 MasterConnection.Open();
 
-                using (var cmd = new SqlCommand("InsertarReproduccion", MasterConnection.connection))
+                using (var cmd = new SqlCommand("InsertarReproduccion", MasterConnection.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@Padre", padreId);

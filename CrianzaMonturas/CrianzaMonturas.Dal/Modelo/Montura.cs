@@ -5,7 +5,7 @@ namespace CrianzaMonturas.Dal.Modelo
     public class Montura : IMontura
     {
         public int Id { get; set; }
-        public string Nombre { get; set; }
+        public string Nombre { get; set; } = string.Empty;
         public bool Salvaje { get; set; }
         public string? Sexo { get; set; }
         public int TipoMonturaId { get; set; }

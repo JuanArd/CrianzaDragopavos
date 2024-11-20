@@ -11,7 +11,7 @@ namespace CrianzaMonturas.Dal.Dao
     {
         public List<TipoMontura> CargarTipoMonturas()
         {
-            List<TipoMontura> tipoMonturas = new();
+            List<TipoMontura> tipoMonturas = [];
 
             try
             {
@@ -19,7 +19,7 @@ namespace CrianzaMonturas.Dal.Dao
 
                 var query = "SELECT [Id], [Nombre] FROM [dbo].[TipoMontura];";
 
-                using (var cmd = new SqlCommand(query, MasterConnection.connection))
+                using (var cmd = new SqlCommand(query, MasterConnection.Connection))
                 {
                     cmd.CommandType = CommandType.Text;
 

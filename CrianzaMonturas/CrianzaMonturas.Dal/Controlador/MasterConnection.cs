@@ -7,9 +7,9 @@ namespace CrianzaMonturas.Dal.Controlador
     public static class MasterConnection
     {
         private static readonly string connectionString = ConfigurationManager.ConnectionStrings["myConn"].ConnectionString;
-        private static SqlConnection conn = new(connectionString);
+        private static readonly SqlConnection conn = new(connectionString);
 
-        public static SqlConnection connection { get { return conn; } }
+        public static SqlConnection Connection { get { return conn; } }
 
         public static void Open()
         {

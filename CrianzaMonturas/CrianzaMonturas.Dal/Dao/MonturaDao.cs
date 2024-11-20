@@ -13,7 +13,7 @@ namespace CrianzaMonturas.Dal.Dao
 
         private List<Montura> CargarPadres(Dictionary<IMontura, List<int>> padres)
         {
-            List<Montura> monturas = new();
+            List<Montura> monturas = [];
 
             foreach (var kvp in padres)
             {
@@ -40,7 +40,7 @@ namespace CrianzaMonturas.Dal.Dao
                     "[Padre], [Madre], [Reproducciones], [MaxReproducciones], [Esteril], [CantPureza] " +
                     "FROM [dbo].[Montura] WHERE Id = @Id;";
 
-                using (var cmd = new SqlCommand(query, MasterConnection.connection))
+                using (var cmd = new SqlCommand(query, MasterConnection.Connection))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@Id", id);
@@ -92,7 +92,7 @@ namespace CrianzaMonturas.Dal.Dao
 
         public List<Montura> CargarMonturas(int tipoMontura)
         {
-            List<Montura> monturas = new();
+            List<Montura> monturas = [];
 
             try
             {
@@ -104,7 +104,7 @@ namespace CrianzaMonturas.Dal.Dao
                     "AND (Esteril = 0 AND Reproducible = 1) OR (Esteril = 1 AND Fecundada = 1)" +
                     "ORDER BY TipoId, Nombre;";
 
-                using (var cmd = new SqlCommand(query, MasterConnection.connection))
+                using (var cmd = new SqlCommand(query, MasterConnection.Connection))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@TipoMontura", tipoMontura);
@@ -128,7 +128,7 @@ namespace CrianzaMonturas.Dal.Dao
                                 CantPureza = reader.GetValue("CantPureza") != DBNull.Value ? reader.GetInt32("CantPureza") : 0
                             };
 
-                            padres.Add(montura, new List<int> { reader.GetInt32("Padre"), reader.GetInt32("Madre") });
+                            padres.Add(montura, [reader.GetInt32("Padre"), reader.GetInt32("Madre")]);
                         }
                     }
 
@@ -156,7 +156,7 @@ namespace CrianzaMonturas.Dal.Dao
             {
                 MasterConnection.Open();
 
-                using (var cmd = new SqlCommand("InsertarCria", MasterConnection.connection))
+                using(var cmd = new SqlCommand("InsertarCria", MasterConnection.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@Nombre", cria.Nombre);

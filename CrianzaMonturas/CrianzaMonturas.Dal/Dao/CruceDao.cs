@@ -4,13 +4,17 @@ using CrianzaMonturas.Dal.Utilidades;
 using System.Data;
 using System.Data.SqlClient;
 
+using CrianzaMonturas.Dal.Controlador;
+using CrianzaMonturas.Dal.Modelo;
+using CrianzaMonturas.Dal.Utilidades;
+
 namespace CrianzaMonturas.Dal.Dao
 {
     public class CruceDao
     {
         public List<Cruce> CargarCruces(int tipoMontura)
         {
-            List<Cruce> cruces = new();
+            List<Cruce> cruces = [];
 
             try
             {
@@ -19,7 +23,7 @@ namespace CrianzaMonturas.Dal.Dao
                 var query = "SELECT [TipoId_Masculino], [TipoId_Femenino], [TipoIdResultado] " +
                     "FROM [dbo].[CruceMontura] WHERE [TipoMonturaId] = @TipoMontura;";
 
-                using (var cmd = new SqlCommand(query, MasterConnection.connection))
+                using (var cmd = new SqlCommand(query, MasterConnection.Connection))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@TipoMontura", tipoMontura);

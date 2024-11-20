@@ -6,10 +6,10 @@ namespace CrianzaMonturas.Dal.Modelo
     {
         public int Id { get; set; }
         public int TipoMonturaId { get; set; }
-        public string Alias { get; set; }
-        public string Nombre { get; set; }
-        public byte[] Imagen { get; set; }
-        public string Sigla { get; set; }
+        public string Alias { get; set; } = string.Empty;
+        public string Nombre { get; set; } = string.Empty;
+        public byte[] Imagen { get; set; } = [];
+        public string Sigla { get; set; } = string.Empty;
         public int Generacion { get; set; }
     }
 }
